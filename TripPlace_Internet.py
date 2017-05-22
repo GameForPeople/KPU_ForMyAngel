@@ -7,9 +7,11 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 conn = None
 #arcode = None   #지역번호
 
-regKey = '0c5747ff0e144b9ca77645c4ed19ef1b'
+regKey = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
 #regKey = '9dc253be6f5224567ede1f03b84a4e24'
+
+# 20170522 작업여기까지함
 
 # 어린이 OpenAPI 접속 정보 information
 server = "api.childcare.go.kr"
