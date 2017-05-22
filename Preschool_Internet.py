@@ -11,7 +11,7 @@ regKey = '0c5747ff0e144b9ca77645c4ed19ef1b'
 
 #regKey = '9dc253be6f5224567ede1f03b84a4e24'
 
-# 어린이 OpenAPI 접속 정보 information
+# 네이버 OpenAPI 접속 정보 information
 server = "api.childcare.go.kr"
 #server = "apis.daum.net"
 
@@ -19,11 +19,12 @@ server = "api.childcare.go.kr"
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
 
+
 def userURIBuilder(server, key, arcode):
     str = "http://" + server + "/mediate/rest/cpmsapi021/cpmsapi021/request" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
-    str += "key=" + key + "&" + "arcode=" + arcode
+    str += "key=" + key + "&"  + "arcode=" + arcode
     return str
 
 #http://api.childcare.go.kr/mediate/rest/cpmsapi021/cpmsapi021/request?key=50b8109640e3b5947a3788a03cfd151c&arcode=11380
@@ -39,9 +40,8 @@ def getPreschoolDataFromArcode(arcode=11380):
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, regKey, arcode )
+    uri = userURIBuilder(server, regKey, arcode )  # 다음 검색 URL
     conn.request("GET", uri)
-    checkConnection()
     print(uri)
 
     req = conn.getresponse()
@@ -73,7 +73,7 @@ def extractPreschoolData(strXml):
         if len(strTitle.text) > 0:
             return {"주소": strAddress.text, "번호": strNumber.text}
 
-"""
+
 def sendMain():
     global host, port
     html = ""
@@ -119,6 +119,7 @@ def sendMain():
 
     print("Mail sending complete!!!")
 
+
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         from urllib.parse import urlparse
@@ -137,6 +138,7 @@ class MyHandler(BaseHTTPRequestHandler):
         else:
             self.send_error(400, ' bad requst : please check the your url')  # 잘 못된 요청라는 에러를 응답한다.
 
+
 def startWebService():
     try:
         server = HTTPServer(('localhost', 8080), MyHandler)
@@ -146,13 +148,11 @@ def startWebService():
     except KeyboardInterrupt:
         print("shutdown web server")
         server.socket.close()  # server 종료합니다.
-"""
+
 
 def checkConnection():
     global conn
     if conn == None:
         print("Error : 연결 실패")
         return False
-    else:
-        print("연결되었습니다.")
-        return True
+    return True

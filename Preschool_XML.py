@@ -4,13 +4,13 @@ from xml.etree import ElementTree
 
 ##### global
 xmlFD = -1
-PreschoolDoc = None
+BooksDoc = None
 
 
 #### xml 관련 함수 구현
 def LoadXMLFromFile():
     fileName = str(input("please input file name to load :"))
-    global xmlFD, PreschoolDoc
+    global xmlFD, BooksDoc
     try:
         xmlFD = open(fileName)
     except IOError:
@@ -22,48 +22,48 @@ def LoadXMLFromFile():
             print("loading fail!!!")
         else:
             print("XML Document loading complete")
-            PreschoolDoc = dom
+            BooksDoc = dom
             return dom
     return None
 
 
-def PreschoolsFree():
+def BooksFree():
     if checkDocument():
-        PreschoolDoc.unlink()
+        BooksDoc.unlink()
 
 
 def PrintDOMtoXML():
     if checkDocument():
-        print(PreschoolDoc.toxml())
+        print(BooksDoc.toxml())
 
-"""
-def PrintPreschoolList(tags):
-    global PreschoolDoc
+
+def PrintBookList(tags):
+    global BooksDoc
     if not checkDocument():
         return None
 
-    Preschoollist = PreschoolDoc.childNodes
-    Preschool = Preschoollist[0].childNodes
-    for item in Preschool:
-        if item.nodeName == "Preschool":
+    booklist = BooksDoc.childNodes
+    book = booklist[0].childNodes
+    for item in book:
+        if item.nodeName == "book":
             subitems = item.childNodes
             for atom in subitems:
                 if atom.nodeName in tags:
-                    print("Preschool=", atom.firstChild.nodeValue)
+                    print("title=", atom.firstChild.nodeValue)
 
 
-def AddPreschool(bookdata):
-    global PreschoolDoc
+def AddBook(bookdata):
+    global BooksDoc
     if not checkDocument():
         return None
 
     # book 엘리먼트 생성
-    newBook = PreschoolDoc.createElement('book')
+    newBook = BooksDoc.createElement('book')
     newBook.setAttribute('ISBN', bookdata['ISBN'])
     # Title 엘리먼트 생성
-    titleEle = PreschoolDoc.createElement('title')
+    titleEle = BooksDoc.createElement('title')
     # 텍스트 노드 생성
-    titleNode = PreschoolDoc.createTextNode(bookdata['title'])
+    titleNode = BooksDoc.createTextNode(bookdata['title'])
     # 텍스트 노드를 Title 엘리먼트와 연결
     try:
         titleEle.appendChild(titleNode)
@@ -76,7 +76,7 @@ def AddPreschool(bookdata):
     # Title 엘리먼트를 Book 엘리먼트와 연결.
     try:
         newBook.appendChild(titleEle)
-        booklist = PreschoolDoc.firstChild
+        booklist = BooksDoc.firstChild
     except Exception:
         print("append child fail- please,check the parent element & node!!!")
         return None
@@ -86,13 +86,13 @@ def AddPreschool(bookdata):
 
 
 def SearchBookTitle(keyword):
-    global PreschoolDoc
+    global BooksDoc
     retlist = []
     if not checkDocument():
         return None
 
     try:
-        tree = ElementTree.fromstring(str(PreschoolDoc.toxml()))
+        tree = ElementTree.fromstring(str(BooksDoc.toxml()))
     except Exception:
         print("Element Tree parsing Error : maybe the xml document is not corrected.")
         return None
@@ -152,11 +152,11 @@ def MakeHtmlDoc(BookList):
 def printBookList(blist):
     for res in blist:
         print(res)
-"""
+
 
 def checkDocument():
-    global PreschoolDoc
-    if PreschoolDoc == None:
+    global BooksDoc
+    if BooksDoc == None:
         print("Error : Document is empty")
         return False
     return True
