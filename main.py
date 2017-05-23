@@ -2,6 +2,7 @@
 loopFlag = 1
 
 from Preschool_Internet import *
+from TripPlace_Internet import *
 
 
 #### Menu  implementation
@@ -39,6 +40,8 @@ def launcherFunction(menu):
         #AddBook(ret)
         pass
     elif menu == 'b':
+        areaCode = str(input ('areacode를 입력해주세요 : '))
+        getTripPlaceData(areaCode)
         pass
     elif menu == 'c':
         pass
