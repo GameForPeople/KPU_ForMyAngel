@@ -1,81 +1,78 @@
-# -*- coding: cp949 -*-
-from TripPlace_XML import *
+from Hospital_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 ##global
 conn = None
-#arcode = None   #Áö¿ª¹øÈ£
+#arcode = None   #ì§€ì—­ë²ˆí˜¸
 
 regKey = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
 #regKey = '9dc253be6f5224567ede1f03b84a4e24'
 
-# ³×ÀÌ¹ö OpenAPI Á¢¼Ó Á¤º¸ information
-server = "api.visitkorea.or.kr"
+# ë„¤ì´ë²„ OpenAPI ì ‘ì† ì •ë³´ information
+server = "apis.data.go.kr"
 #server = "apis.daum.net"
 
-# smtp Á¤º¸
-host = "smtp.gmail.com"  # Gmail SMTP ¼­¹ö ÁÖ¼Ò.
+# smtp ì •ë³´
+host = "smtp.gmail.com"  # Gmail SMTP ì„œë²„ ì£¼ì†Œ.
 port = "587"
 
 
-def userURIBuilder(server, key, areaCode):
-    str = "http://" + server + "/openapi/service/rest/KorService/areaBasedList" + "?"
+def userURIBuilder(server, key, sidoCd, sgguCd):
+    str = "http://" + server + "/B551182/hospInfoService/getHospBasisList" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
-    str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&MobileOS=ETC&MobileApp=AppTesting"
+    str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&dgsbjtCd=11" + "&ServiceKey=" + key
     return str
-
-#http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=ÀÎÁõÅ°&areaCode=35&MobileOS=ETC&MobileApp=AppTesting
 
 def connectOpenAPIServer():
     global conn, server
     conn = HTTPConnection(server)
 
 
-def getTripPlaceData(areaCode):
-    global server, regKey, conn
+def getHospitalData(sidoCd, sgguCd):
+    global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, regKey, areaCode)  # ´ÙÀ½ °Ë»ö URL
+    uri = userURIBuilder(server, Key, sidoCd, sgguCd)  # ë‹¤ìŒ ê²€ìƒ‰ URL
     conn.request("GET", uri)
     print(uri)
 
     req = conn.getresponse()
 
     if int(req.status) == 200:
-        print("³î°÷ Á¤º¸¸¦ ¸ğµÎ ¹Ş¾Æ¿Ô½À´Ï´Ù")
-        return extractTripPlaceData(req.read())
+        print("ë†€ê³³ ì •ë³´ë¥¼ ëª¨ë‘ ë°›ì•„ì™”ìŠµë‹ˆë‹¤")
+        return extractHospitalData(req.read())
     else:
-        print("¿ª½Ã ³î°÷ Á¤º¸´Â ¹Ş¾Æ¿ÀÁö ¸øÇß½À´Ï´Ù.")
+        print("ì—­ì‹œ ë†€ê³³ ì •ë³´ëŠ” ë°›ì•„ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.")
         return None
 
 
-#²ôÁı¾î ³»´Â °÷
-def extractTripPlaceData(strXml):
+#ë„ì§‘ì–´ ë‚´ëŠ” ê³³
+def extractHospitalData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
-    # TripPlaceData(Book) ¿¤¸®¸ÕÆ®¸¦ °¡Á®¿É´Ï´Ù.
-    tripPlaceIndex = 1
-    ####################¼º°øÇÑÄÚ?¤»¤»¤»¤»¤»¤»¤»¤»¤» ¿ÕÁÁ°í¿ä!!!!
+    # HospitalData(Book) ì—˜ë¦¬ë¨¼íŠ¸ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
+    HospitalIndex = 1
+    ####################ì„±ê³µí•œì½”ë“´ã…‹ã…‹ã…‹ã…‹ã…‹ã…‹ã…‹ã…‹ã…‹ ì™•ì¢‹ê³ ìš”!!!!
     for item in tree.iter("item"):
-        tripPlaceTitle = item.find("title")
-        tripPlaceAddress = item.find("add1")
-        tripPlaceTel = item.find("tel")
-        print(tripPlaceIndex)
-        print(tripPlaceTitle.text)
-        if tripPlaceAddress != None:
-            print(tripPlaceAddress.text)
-        if tripPlaceTel != None:
-            print(tripPlaceTel.text)
+        HospitalTitle = item.find("title")
+        HospitalAddress = item.find("add1")
+        HospitalTel = item.find("tel")
+        print(HospitalIndex)
+        print(HospitalTitle.text)
+        if HospitalAddress != None:
+            print(HospitalAddress.text)
+        if HospitalTel != None:
+            print(HospitalTel.text)
         print()
-        tripPlaceIndex += 1
+        HospitalIndex += 1
 
-        #print("  " + tripPlaceTitle.text + "  ¹øÈ£ : " + tripPlaceTel + "   ÁÖ¼Ò : " + tripPlaceAddress)
+        #print("  " + tripPlaceTitle.text + "  ë²ˆí˜¸ : " + tripPlaceTel + "   ì£¼ì†Œ : " + tripPlaceAddress)
 
     #####################
     #itemElements = tree.getiterator("item")  # return list type
@@ -88,7 +85,7 @@ def extractTripPlaceData(strXml):
     #    print(item.get("title"))
     #    print(strTitle)
     #    #if len(strTitle.text) > 0:
-    #    return {"ÁÖ¼Ò": strAddress, "¹øÈ£": strNumber}
+    #    return {"ì£¼ì†Œ": strAddress, "ë²ˆí˜¸": strNumber}
     ########################
 
 
@@ -106,11 +103,11 @@ def sendMain():
         html = MakeHtmlDoc(SearchBookTitle(keyword))
 
     import mysmtplib
-    # MIMEMultipartÀÇ MIMEÀ» »ı¼ºÇÕ´Ï´Ù.
+    # MIMEMultipartì˜ MIMEì„ ìƒì„±í•©ë‹ˆë‹¤.
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
-    # Message container¸¦ »ı¼ºÇÕ´Ï´Ù.
+    # Message containerë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
     msg = MIMEMultipart('alternative')
 
     # set message
@@ -121,7 +118,7 @@ def sendMain():
     msgPart = MIMEText(msgtext, 'plain')
     bookPart = MIMEText(html, 'html', _charset='UTF-8')
 
-    # ¸Ş¼¼Áö¿¡ »ı¼ºÇÑ MIME ¹®¼­¸¦ Ã·ºÎÇÕ´Ï´Ù.
+    # ë©”ì„¸ì§€ì— ìƒì„±í•œ MIME ë¬¸ì„œë¥¼ ì²¨ë¶€í•©ë‹ˆë‹¤.
     msg.attach(msgPart)
     msg.attach(bookPart)
 
@@ -131,7 +128,7 @@ def sendMain():
     s.ehlo()
     s.starttls()
     s.ehlo()
-    s.login(senderAddr, passwd)  # ·Î±äÀ» ÇÕ´Ï´Ù.
+    s.login(senderAddr, passwd)  # ë¡œê¸´ì„ í•©ë‹ˆë‹¤.
     s.sendmail(senderAddr, [recipientAddr], msg.as_string())
     s.close()
 
@@ -147,14 +144,14 @@ class MyHandler(BaseHTTPRequestHandler):
         keyword, value = parts.query.split('=', 1)
 
         if keyword == "title":
-            html = MakeHtmlDoc(SearchBookTitle(value))  # keyword¿¡ ÇØ´çÇÏ´Â Ã¥À» °Ë»öÇØ¼­ HTML·Î ÀüÈ¯ÇÕ´Ï´Ù.
-            ##Çì´õ ºÎºĞÀ» ÀÛ¼º.
+            html = MakeHtmlDoc(SearchBookTitle(value))  # keywordì— í•´ë‹¹í•˜ëŠ” ì±…ì„ ê²€ìƒ‰í•´ì„œ HTMLë¡œ ì „í™˜í•©ë‹ˆë‹¤.
+            ##í—¤ë” ë¶€ë¶„ì„ ì‘ì„±.
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            self.wfile.write(html.encode('utf-8'))  # º»ºĞ( body ) ºÎºĞÀ» Ãâ·Â ÇÕ´Ï´Ù.
+            self.wfile.write(html.encode('utf-8'))  # ë³¸ë¶„( body ) ë¶€ë¶„ì„ ì¶œë ¥ í•©ë‹ˆë‹¤.
         else:
-            self.send_error(400, ' bad requst : please check the your url')  # Àß ¸øµÈ ¿äÃ»¶ó´Â ¿¡·¯¸¦ ÀÀ´äÇÑ´Ù.
+            self.send_error(400, ' bad requst : please check the your url')  # ì˜ ëª»ëœ ìš”ì²­ë¼ëŠ” ì—ëŸ¬ë¥¼ ì‘ë‹µí•œë‹¤.
 
 
 def startWebService():
@@ -165,12 +162,12 @@ def startWebService():
 
     except KeyboardInterrupt:
         print("shutdown web server")
-        server.socket.close()  # server Á¾·áÇÕ´Ï´Ù.
+        server.socket.close()  # server ì¢…ë£Œí•©ë‹ˆë‹¤.
 
 
 def checkConnection():
     global conn
     if conn == None:
-        print("Error : ¿¬°á ½ÇÆĞ")
+        print("Error : ì—°ê²° ì‹¤íŒ¨")
         return False
     return True

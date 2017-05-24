@@ -3,6 +3,7 @@ loopFlag = 1
 
 from Preschool_Internet import *
 from TripPlace_Internet import *
+from Hospital_Internet import *
 
 
 #### Menu  implementation
@@ -44,6 +45,10 @@ def launcherFunction(menu):
         getTripPlaceData(areaCode)
         pass
     elif menu == 'c':
+        big = str(input ('시도코드를 입력해주세요 : '))
+        little = str(input ('시군구코드를 입력해주세요 : '))
+        #110000 110019
+        getHospitalData(big, little)
         pass
     elif menu == 'd':
         pass

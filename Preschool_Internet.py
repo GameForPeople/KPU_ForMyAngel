@@ -44,8 +44,8 @@ def getPreschoolDataFromArcode(arcode=11380):
     conn.request("GET", uri)
     print(uri)
 
-    req = conn.getresponse()
     print("¿©±â¾ß!")
+    req = conn.getresponse()
 
     print(req.status)
     if int(req.status) == 50:
