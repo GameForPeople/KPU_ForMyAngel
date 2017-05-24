@@ -4,13 +4,13 @@ from xml.etree import ElementTree
 
 ##### global
 xmlFD = -1
-BooksDoc = None
+TripPlaceDoc = None
 
 
 #### xml 관련 함수 구현
 def LoadXMLFromFile():
     fileName = str(input("please input file name to load :"))
-    global xmlFD, BooksDoc
+    global xmlFD, TripPlaceDoc
     try:
         xmlFD = open(fileName)
     except IOError:
@@ -22,27 +22,27 @@ def LoadXMLFromFile():
             print("loading fail!!!")
         else:
             print("XML Document loading complete")
-            BooksDoc = dom
+            TripPlaceDoc = dom
             return dom
     return None
 
 
-def BooksFree():
+def TripPlacesFree():
     if checkDocument():
-        BooksDoc.unlink()
+        TripPlaceDoc.unlink()
 
 
 def PrintDOMtoXML():
     if checkDocument():
-        print(BooksDoc.toxml())
+        print(TripPlaceDoc.toxml())
 
 
 def PrintBookList(tags):
-    global BooksDoc
+    global TripPlaceDoc
     if not checkDocument():
         return None
 
-    booklist = BooksDoc.childNodes
+    booklist = TripPlaceDoc.childNodes
     book = booklist[0].childNodes
     for item in book:
         if item.nodeName == "book":
@@ -53,17 +53,17 @@ def PrintBookList(tags):
 
 
 def AddBook(bookdata):
-    global BooksDoc
+    global TripPlaceDoc
     if not checkDocument():
         return None
 
     # book 엘리먼트 생성
-    newBook = BooksDoc.createElement('book')
+    newBook = TripPlaceDoc.createElement('book')
     newBook.setAttribute('ISBN', bookdata['ISBN'])
     # Title 엘리먼트 생성
-    titleEle = BooksDoc.createElement('title')
+    titleEle = TripPlaceDoc.createElement('title')
     # 텍스트 노드 생성
-    titleNode = BooksDoc.createTextNode(bookdata['title'])
+    titleNode = TripPlaceDoc.createTextNode(bookdata['title'])
     # 텍스트 노드를 Title 엘리먼트와 연결
     try:
         titleEle.appendChild(titleNode)
@@ -76,7 +76,7 @@ def AddBook(bookdata):
     # Title 엘리먼트를 Book 엘리먼트와 연결.
     try:
         newBook.appendChild(titleEle)
-        booklist = BooksDoc.firstChild
+        booklist = TripPlaceDoc.firstChild
     except Exception:
         print("append child fail- please,check the parent element & node!!!")
         return None
@@ -86,13 +86,13 @@ def AddBook(bookdata):
 
 
 def SearchBookTitle(keyword):
-    global BooksDoc
+    global TripPlaceDoc
     retlist = []
     if not checkDocument():
         return None
 
     try:
-        tree = ElementTree.fromstring(str(BooksDoc.toxml()))
+        tree = ElementTree.fromstring(str(TripPlaceDoc.toxml()))
     except Exception:
         print("Element Tree parsing Error : maybe the xml document is not corrected.")
         return None
@@ -155,8 +155,8 @@ def printBookList(blist):
 
 
 def checkDocument():
-    global BooksDoc
-    if BooksDoc == None:
+    global TripPlaceDoc
+    if TripPlaceDoc == None:
         print("Error : Document is empty")
         return False
     return True

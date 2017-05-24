@@ -45,35 +45,40 @@ def getTripPlaceData(areaCode):
     print(uri)
 
     req = conn.getresponse()
-    print("여기야!")
 
-    print(req.status)
-    return extractTripPlaceData(req.read())
-
-    #if int(req.status) == 100:
-    #    print("놀곳 정보를 모두 받아왔습니다")
-    #    #return extractTripPlaceData(req.read())
-    #else:
-    #    print("역시 놀곳 정보는 받아오지 못했습니다.")
-    #    return None
+    if int(req.status) == 200:
+        print("놀곳 정보를 모두 받아왔습니다")
+        return extractTripPlaceData(req.read())
+    else:
+        print("역시 놀곳 정보는 받아오지 못했습니다.")
+        return None
 
 
+#끄집어 내는 곳
 def extractTripPlaceData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
-    print(strXml)
-    # PreschoolData(Book) 엘리먼트를 가져옵니다.
-    itemElements = tree.getiterator("item")  # return list type
-    print(itemElements)
-    for item in itemElements:
-        #isbn = item.find("isbn")
-        strTitle = item.find("title")
-        strAddress = item.find("add1")
-        strNumber = item.find("tel")
+    #print(strXml)
+    # TripPlaceData(Book) 엘리먼트를 가져옵니다.
 
-        print(strTitle)
-        #if len(strTitle.text) > 0:
-        return {"주소": strAddress.text, "번호": strNumber.text}
+    #####################
+    for item in tree.iter("item"):
+        tripPlaceTitle = item.find("title")
+        print(tripPlaceTitle.text)
+
+    #####################
+    #itemElements = tree.getiterator("item")  # return list type
+    #print(itemElements)
+    #for item in itemElements:
+    #    #isbn = item.find("isbn")
+    #    strTitle = item.find("title")
+    #    strAddress = item.find("add1")
+    #    strNumber = item.find("tel")
+    #    print(item.get("title"))
+    #    print(strTitle)
+    #    #if len(strTitle.text) > 0:
+    #    return {"주소": strAddress, "번호": strNumber}
+    ########################
 
 
 def sendMain():
