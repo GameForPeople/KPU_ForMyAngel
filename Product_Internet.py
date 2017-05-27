@@ -1,4 +1,4 @@
-from Hospital_XML import *
+from Product_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -31,7 +31,7 @@ def connectOpenAPIServer():
     conn = HTTPConnection(server)
 
 
-def getHospitalData(sidoCd, sgguCd):
+def getProductData(sidoCd, sgguCd):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
@@ -45,32 +45,32 @@ def getHospitalData(sidoCd, sgguCd):
 
     if int(req.status) == 200:
         print("병원 정보를 모두 받아왔습니다")
-        return extractHospitalData(req.read())
+        return extractProductData(req.read())
     else:
         print("역시 병원 정보는 받아오지 못했습니다.")
         return None
 
 
 #끄집어 내는 곳
-def extractHospitalData(strXml):
+def extractProductData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
-    # HospitalData(Book) 엘리먼트를 가져옵니다.
-    HospitalIndex = 1
+    # ProductData(Book) 엘리먼트를 가져옵니다.
+    ProductIndex = 1
     ####################성공한코듴ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왕좋고요!!!!
     for item in tree.iter("item"):
-        HospitalTitle = item.find("yadmNm")
-        HospitalAddress = item.find("addr")
-        HospitalTel = item.find("telno")
-        print(HospitalIndex)
-        print(HospitalTitle.text)
-        if HospitalAddress != None:
-            print(HospitalAddress.text)
-        if HospitalTel != None:
-            print(HospitalTel.text)
+        ProductTitle = item.find("yadmNm")
+        ProductAddress = item.find("addr")
+        ProductTel = item.find("telno")
+        print(ProductIndex)
+        print(ProductTitle.text)
+        if ProductAddress != None:
+            print(ProductAddress.text)
+        if ProductTel != None:
+            print(ProductTel.text)
         print()
-        HospitalIndex += 1
+        ProductIndex += 1
 
         #print("  " + tripPlaceTitle.text + "  번호 : " + tripPlaceTel + "   주소 : " + tripPlaceAddress)
 
