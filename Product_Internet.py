@@ -6,24 +6,26 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 conn = None
 #arcode = None   #지역번호
 
-Key = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
+Key = '9dc253be6f5224567ede1f03b84a4e24'
 
 #regKey = '9dc253be6f5224567ede1f03b84a4e24'
 
-# 네이버 OpenAPI 접속 정보 information
-server = "apis.data.go.kr"
+# 다음 OpenAPI 접속 정보 information
+server = "apis.daum.net"
 #server = "apis.daum.net"
+
+#https://apis.daum.net/shopping/search?apikey={apikey}&q=신학기 가방&result=20&pageno=3&output=json&sort=min_price
 
 # smtp 정보
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
 
 
-def userURIBuilder(server, key, sidoCd, sgguCd):
-    str = "http://" + server + "/B551182/hospInfoService/getHospBasisList" + "?"
+def userURIBuilder(server, key, question):
+    str = "http://" + server + "/shopping/search" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
-    str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&dgsbjtCd=11" + "&ServiceKey=" + key
+    str += "apikey=" + key + "&" + "q=" + question + "&result=20" + "&pageno=2" + "&output=xml" + "&sort=min_price"
     return str
 
 def connectOpenAPIServer():
@@ -31,23 +33,23 @@ def connectOpenAPIServer():
     conn = HTTPConnection(server)
 
 
-def getProductData(sidoCd, sgguCd):
+def getProductData(question):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, Key, sidoCd, sgguCd)  # 다음 검색 URL
+    uri = userURIBuilder(server, Key, question)  # 다음 검색 URL
     conn.request("GET", uri)
     print(uri)
 
     req = conn.getresponse()
 
     if int(req.status) == 200:
-        print("병원 정보를 모두 받아왔습니다")
+        print("물품 정보를 모두 받아왔습니다")
         return extractProductData(req.read())
     else:
-        print("역시 병원 정보는 받아오지 못했습니다.")
+        print("역시 물품 정보는 받아오지 못했습니다.")
         return None
 
 
@@ -60,15 +62,23 @@ def extractProductData(strXml):
     ProductIndex = 1
     ####################성공한코듴ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왕좋고요!!!!
     for item in tree.iter("item"):
-        ProductTitle = item.find("yadmNm")
-        ProductAddress = item.find("addr")
-        ProductTel = item.find("telno")
+        ProductTitle = item.find("title")
+        ProductPrice = item.find("price_min")
+        ProductBrand = item.find("brand")
+        ProductCategory = item.find("category_name")
+    #<category_name>
+
         print(ProductIndex)
+
+        if ProductBrand != None:
+            print(ProductBrand.text)
+
         print(ProductTitle.text)
-        if ProductAddress != None:
-            print(ProductAddress.text)
-        if ProductTel != None:
-            print(ProductTel.text)
+        print(ProductCategory.text)
+
+        if ProductPrice != None:
+            print(ProductPrice.text)
+
         print()
         ProductIndex += 1
 

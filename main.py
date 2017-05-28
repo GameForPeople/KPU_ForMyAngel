@@ -52,9 +52,8 @@ def launcherFunction(menu):
         getHospitalData(big, little)
         pass
     elif menu == 'd':
-        sidoCd = str(input ('시도코드를 입력해주세요 :  110000~ '))
-        sgguCd = str(input ('시군구코드를 입력해주세요 : 110019 ~ '))
-        getProductData(sidoCd, sgguCd)
+        questionInput = str(input ('상품 종류를 입력해주세요 :  '))
+        getProductData(questionInput)
         pass
     elif menu == 'q':
         QuitProgram()
