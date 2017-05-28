@@ -42,16 +42,19 @@ def launcherFunction(menu):
         #AddBook(ret)
         pass
     elif menu == 'b':
-        areaCode = str(input ('areacode를 입력해주세요 : '))
+        areaCode = str(input ('areacode를 입력해주세요 : 31~  '))
         getTripPlaceData(areaCode)
         pass
     elif menu == 'c':
-        big = str(input ('시도코드를 입력해주세요 : '))
-        little = str(input ('시군구코드를 입력해주세요 : '))
+        big = str(input ('시도코드를 입력해주세요 :  110000~ '))
+        little = str(input ('시군구코드를 입력해주세요 : 110019 ~ '))
         #110000 110019
         getHospitalData(big, little)
         pass
     elif menu == 'd':
+        sidoCd = str(input ('시도코드를 입력해주세요 :  110000~ '))
+        sgguCd = str(input ('시군구코드를 입력해주세요 : 110019 ~ '))
+        getProductData(sidoCd, sgguCd)
         pass
     elif menu == 'q':
         QuitProgram()
