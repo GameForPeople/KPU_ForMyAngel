@@ -2,6 +2,10 @@ from Product_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import urllib
+import http.client
+
+
 ##global
 conn = None
 #arcode = None   #지역번호
@@ -25,13 +29,14 @@ def userURIBuilder(server, key, question):
     str = "http://" + server + "/shopping/search" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
-    str += "apikey=" + key + "&" + "q=" + question + "&result=20" + "&pageno=2" + "&output=xml" + "&sort=min_price"
+    hangul_utf8 = urllib.parse.quote(question)
+    str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=2" + "&output=xml" + "&sort=min_price"
     return str
 
 def connectOpenAPIServer():
     global conn, server
-    conn = HTTPConnection(server)
-
+    #conn = HTTPConnection(server)
+    conn = http.client.HTTPConnection("apis.daum.net")
 
 def getProductData(question):
     global server, Key, conn
@@ -44,10 +49,12 @@ def getProductData(question):
     print(uri)
 
     req = conn.getresponse()
+    #print(req.status, req.reason)
 
     if int(req.status) == 200:
         print("물품 정보를 모두 받아왔습니다")
-        return extractProductData(req.read())
+        #return extractProductData(req.read())
+        return extractProductData(req.read().decode('utf-8'))
     else:
         print("역시 물품 정보는 받아오지 못했습니다.")
         return None

@@ -22,9 +22,7 @@ port = "587"
 
 def userURIBuilder(server, key, arcode):
     str = "http://" + server + "/mediate/rest/cpmsapi021/cpmsapi021/request" + "?"
-    #for key in user.keys():
-    #    str += "key" + key + "=" + user[key] + "&"
-    str += "key=" + key + "&"  + "arcode=" + arcode
+    str += "key=" + key + "&" + "arcode=" + arcode
     return str
 
 #http://api.childcare.go.kr/mediate/rest/cpmsapi021/cpmsapi021/request?key=50b8109640e3b5947a3788a03cfd151c&arcode=11380
@@ -36,21 +34,29 @@ def connectOpenAPIServer():
 
 def getPreschoolDataFromArcode(arcode=11380):
     global server, regKey, conn
-    if conn == None:
-        connectOpenAPIServer()
-    # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
-
-    uri = userURIBuilder(server, regKey, arcode )  # 다음 검색 URL
-    conn.request("GET", uri)
-    print(uri)
 
     print(" 1. 이부분이 오류야!!")
+    if conn == None:
+        connectOpenAPIServer()
+
+    uri = userURIBuilder(server, regKey, arcode)
+    print(uri)
+
+    # 생활코딩 질문을 위해 함수부분을 추가합니다.
+    #def userURIBuilder(server, key, arcode):
+    #str = "http://" + server + "/mediate/rest/cpmsapi021/cpmsapi021/request" + "?"
+    #str += "key=" + key + "&" + "arcode=" + arcode
+    #return str
+
+
     print(" 2. 이부분이 오류야!!")
+    conn.request("GET", uri)
+
     print(" 3. 이부분이 오류야!!")
     req = conn.getresponse()
 
     print(req.status)
-    if int(req.status) == 50:
+    if int(req.status) == 200:
         print("유치원 정보를 모두 받아왔습니다")
         return extractPreschoolData(req.read())
     else:
