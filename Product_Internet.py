@@ -30,7 +30,7 @@ def userURIBuilder(server, key, question):
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
     hangul_utf8 = urllib.parse.quote(question)
-    str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=2" + "&output=xml" + "&sort=min_price"
+    str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=3" + "&output=xml" + "&sort=min_price"
     return str
 
 def connectOpenAPIServer():
