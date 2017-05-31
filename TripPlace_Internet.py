@@ -24,11 +24,23 @@ def userURIBuilderArea(server, key, areaCode, page):
     str = "http://" + server + "/openapi/service/rest/KorService/areaBasedList" + "?"
 
     if page == 1:
-        str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&numOfRows=20&pageNo=1" ‚
-                                                                "&MobileOS=ETC&MobileApp=AppTesting"
+        str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTesting"
+    elif page == 2:
+        str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&numOfRows=20&pageNo=2&MobileOS=ETC&MobileApp=AppTesting"
+    elif page == 3:
+        str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&numOfRows=20&pageNo=3&MobileOS=ETC&MobileApp=AppTesting"
     return str
 
-#http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=ÀÎÁõÅ°&areaCode=35&MobileOS=ETC&MobileApp=AppTesting
+def userURIBuilderCate(server, key, page):
+    str = "http://" + server + "/openapi/service/rest/KorService/areaBasedList" + "?"
+
+    if page == 1:
+        str += "ServiceKey=" + key + "&" + "cat1=C01&cat2=C0112" + "&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTesting"
+    elif page == 2:
+        str += "ServiceKey=" + key + "&" + "cat1=C01&cat2=C0112" + "&numOfRows=20&pageNo=2&MobileOS=ETC&MobileApp=AppTesting"
+    elif page == 3:
+        str += "ServiceKey=" + key + "&" + "cat1=C01&cat2=C0112" + "&numOfRows=20&pageNo=3&MobileOS=ETC&MobileApp=AppTesting"
+    return str
 
 def connectOpenAPIServer():
     global conn, server
@@ -59,7 +71,7 @@ def getTripPlaceDataCate(page):
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
-    uri = userURIBuilder(server, regKey, areaCode)  # ´ÙÀ½ °Ë»ö URL
+    uri = userURIBuilderCate(server, regKey, page)  # ´ÙÀ½ °Ë»ö URL
     conn.request("GET", uri)
     print(uri)
     req = conn.getresponse()
@@ -81,7 +93,7 @@ def extractTripPlaceData(strXml):
     ####################¼º°øÇÑÄÚ?¤»¤»¤»¤»¤»¤»¤»¤»¤» ¿ÕÁÁ°í¿ä!!!!
     for item in tree.iter("item"):
         tripPlaceTitle = item.find("title")
-        tripPlaceAddress = item.find("add1")
+        tripPlaceAddress = item.find("addr1")
         tripPlaceTel = item.find("tel")
         print(tripPlaceIndex)
         print(tripPlaceTitle.text)

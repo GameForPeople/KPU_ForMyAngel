@@ -42,15 +42,15 @@ def launcherFunction(menu):
         while(isBook):
             getPreschoolDataFromArcode(bookQuestion, bookPage)
 
-            bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요'))
+            bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
             if bookPage == 3:
                 print("")
                 print("모든 결과를 열람하셨습니다. ")
                 bookPage = 1
                 isBook = False
-            elif bookBuffer == 'Y':
+            elif bookBuffer == 'Y' or bookBuffer == 'y' :
                 bookPage += 1
-            elif bookBuffer == 'N':
+            elif bookBuffer == 'N' or bookBuffer == 'n':
                 bookPage = 1
                 isBook = False
 
@@ -60,6 +60,7 @@ def launcherFunction(menu):
         tripPage = 1
         whatFunctionTrip = str(input('지역에 따른 검색은 A, 가족 추천 코스를 원하시면 B를 입력해주세요'))
         if whatFunctionTrip == 'a':
+            print("1 서울 2 인천 3 대전 4 대구 5광주 6 부산 7 울산 8 세종 ")
             areaCode = str(input('원하시는 지역을 입력해주세요 : '))
 
         while(isTrip):
@@ -68,28 +69,60 @@ def launcherFunction(menu):
             elif whatFunctionTrip == 'b':
                getTripPlaceDataCate(tripPage)
 
-            tripBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요'))
+            tripBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
             if tripPage == 3:
                 print("")
                 print("모든 결과를 열람하셨습니다. ")
                 tripPage = 1
                 isTrip = False
-            elif tripBuffer == 'Y':
+            elif tripBuffer == 'Y' or tripBuffer == 'y':
                 tripPage += 1
-            elif tripBuffer == 'N':
+            elif tripBuffer == 'N' or tripBuffer == 'n':
                 tripPage = 1
                 isTrip = False
 
         pass
     elif menu == 'c':
+        isHos = True
+        hosPage = 1
         big = str(input ('시도코드를 입력해주세요 :  110000~ '))
         little = str(input ('시군구코드를 입력해주세요 : 110019 ~ '))
-        #110000 110019
-        getHospitalData(big, little)
+        hosAddr = str(input ('읍남동을 입력해주세요 : '))
+
+        while(isHos):
+            getHospitalData(big, little, hosAddr,  hosPage)
+
+            hosBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
+            if hosPage == 3:
+                print("")
+                print("모든 결과를 열람하셨습니다. ")
+                hosPage = 1
+                isHos = False
+            elif hosBuffer == 'Y' or hosBuffer == 'y':
+                hosPage += 1
+            elif hosBuffer == 'N' or hosBuffer == 'n':
+                hosPage = 1
+                isHos = False
         pass
     elif menu == 'd':
+        isProd = True
+        prodPage = 1
         questionInput = str(input ('상품 종류를 입력해주세요 :  '))
-        getProductData(questionInput)
+
+        while(isProd):
+            getProductData(questionInput, prodPage)
+
+            prodBuffer = str(input('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
+            if prodPage == 3:
+                print("")
+                print("모든 결과를 열람하셨습니다. ")
+                prodPage = 1
+                isProd = False
+            elif prodBuffer == 'Y' or prodBuffer == 'y':
+                prodPage += 1
+            elif prodBuffer == 'N' or prodBuffer == 'n':
+                prodPage = 1
+                isProd = False
         pass
     elif menu == 'q':
         QuitProgram()

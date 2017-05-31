@@ -1,6 +1,9 @@
 from Hospital_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import urllib
+import http.client
+
 
 ##global
 conn = None
@@ -19,33 +22,42 @@ port = "587"
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 
 
-def userURIBuilder(server, key, sidoCd, sgguCd):
+def userURIBuilder(server, key, sidoCd, sgguCd, addr, page):
     str = "http://" + server + "/B551182/hospInfoService/getHospBasisList" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
-    str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&dgsbjtCd=11" + "&ServiceKey=" + key
+    hangul_utf8 = urllib.parse.quote(addr)
+
+    if page == 1:
+        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
+    elif page == 2:
+        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
+    elif page == 3:
+        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
+
     return str
 
 def connectOpenAPIServer():
     global conn, server
-    conn = HTTPConnection(server)
+    #conn = HTTPConnection(server)
+    conn = http.client.HTTPConnection(server)
 
-
-def getHospitalData(sidoCd, sgguCd):
+def getHospitalData(sidoCd, sgguCd, addr, page):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, Key, sidoCd, sgguCd)  # 다음 검색 URL
+    uri = userURIBuilder(server, Key, sidoCd, sgguCd, addr, page)  # 다음 검색 URL
     conn.request("GET", uri)
     print(uri)
 
     req = conn.getresponse()
+    print(req.status)
 
     if int(req.status) == 200:
         print("병원 정보를 모두 받아왔습니다")
-        return extractHospitalData(req.read())
+        return extractHospitalData(req.read().decode('utf-8'))
     else:
         print("역시 병원 정보는 받아오지 못했습니다.")
         return None

@@ -25,12 +25,17 @@ host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
 
 
-def userURIBuilder(server, key, question):
+def userURIBuilder(server, key, question, page):
     str = "http://" + server + "/shopping/search" + "?"
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
     hangul_utf8 = urllib.parse.quote(question)
-    str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=3" + "&output=xml" + "&sort=min_price"
+    if page == 1:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=1" + "&output=xml" + "&sort=pop"
+    elif page == 2:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=2" + "&output=xml" + "&sort=pop"
+    elif page == 3:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&result=20" + "&pageno=3" + "&output=xml" + "&sort=pop"
     return str
 
 def connectOpenAPIServer():
@@ -38,13 +43,13 @@ def connectOpenAPIServer():
     #conn = HTTPConnection(server)
     conn = http.client.HTTPConnection("apis.daum.net")
 
-def getProductData(question):
+def getProductData(question, page):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, Key, question)  # 다음 검색 URL
+    uri = userURIBuilder(server, Key, question, page)  # 다음 검색 URL
     conn.request("GET", uri)
     print(uri)
 
