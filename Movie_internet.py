@@ -1,5 +1,5 @@
 # -*- coding: cp949 -*-
-from Preschool_XML import *
+from Movie_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -23,16 +23,16 @@ port = "587"
 
 
 def userURIBuilder(server, key, question, page):
-    str = "https://" + server + "/search/book" + "?"
+    str = "https://" + server + "/contents/movie" + "?"
 
     hangul_utf8 = urllib.parse.quote(question)
 
     if page == 1:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=1"
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=1"
     elif page == 2:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=2"
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=2"
     elif page == 3:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=3"
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=3"
 
     return str
 
@@ -42,7 +42,7 @@ def connectOpenAPIServer():
     conn = http.client.HTTPConnection(server)
 
 
-def getPreschoolDataFromArcode(area, page):
+def getMovieDataFromArcode(area, page):
     global server, regKey, conn
 
     if conn == None:
@@ -56,37 +56,37 @@ def getPreschoolDataFromArcode(area, page):
 
     print(req.status)
     if int(req.status) == 200:
-        print("책 정보를 모두 받아왔습니다")
+        print("영화 정보를 모두 받아왔습니다")
         #return extractPreschoolData(req.read())
-        extractPreschoolData(req.read().decode('utf-8'))
+        extractMovieData(req.read().decode('utf-8'))
         return None
     else:
-        print("역시 책 정보는 받아오지 못했습니다.")
+        print("역시 영화 정보는 받아오지 못했습니다.")
         return None
 
 
-def extractPreschoolData(strXml):
+def extractMovieData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
     # PreschoolData(Book) 엘리먼트를 가져옵니다.
     #itemElements = tree.getiterator("item")  # return list type
     #print(itemElements)
-    BookIndex = 1
+    MovieIndex = 1
 
     for item in tree.iter("item"):
-        strAuthor = item.find("author")
-        strCategory = item.find("category")
-        strPrice = item.find("list_price")
+        strDirector = item.find("director")
+        strGenre = item.find("genre")
+        strActor = item.find("actor")
         strTitle = item.find("title")
 
-        if strTitle != None or strAuthor != None or strCategory != None or strPrice != None:
-            print(BookIndex)
+        if strTitle != None or strDirector != None or strGenre != None or strActor != None:
+            print(MovieIndex)
             print(strTitle.text)
             if len(strTitle.text) > 0:
-                print("저자 : " + strAuthor.text, "분류 : " + strCategory.text, "가격 : " + strPrice.text)
+                print("감독 : " + strDirector.text, "장르 : " + strGenre.text, "주연 : " + strActor.text)
                 print(" ")
-            BookIndex += 1
+            MovieIndex += 1
         else:
             return None
 

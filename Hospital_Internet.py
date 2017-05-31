@@ -27,13 +27,13 @@ def userURIBuilder(server, key, sidoCd, sgguCd, addr, page):
     #for key in user.keys():
     #    str += "key" + key + "=" + user[key] + "&"
     hangul_utf8 = urllib.parse.quote(addr)
-
+#110000 110019
     if page == 1:
-        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
+        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
     elif page == 2:
-        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
+        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
     elif page == 3:
-        str += "sidoCd=" + sidoCd + "&" + "sgguCd=" + sgguCd + "&emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
+        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
 
     return str
 

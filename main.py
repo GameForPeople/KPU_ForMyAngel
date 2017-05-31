@@ -1,17 +1,19 @@
 # -*- coding: 원성연 -*-
 loopFlag = 1
 
-from Preschool_Internet import *
+from Book_Internet import *
+from Movie_internet import *
 from TripPlace_Internet import *
 from Hospital_Internet import *
 from Product_Internet import *
 
-
 #### Menu  implementation
 def printMenu():
-    print("₩n안녕하세요! For My Angel")
+    print("")
+    print("======================")
+    print("For My Angel")
     print("========Menu==========")
-    print("Show 유치원 : A ")
+    print("Show 문화 : A ")
     print("Show 놀곳 : B ")
     print("Show 의료기관 : C ")
     print("Show 가격정보 : D ")
@@ -30,31 +32,56 @@ def printMenu():
     print("send maIl : i")
     print("sTart Web Service: t")
     print("========Menu==========")
-    """
+"""
 
 def launcherFunction(menu):
 
     if menu == 'a':
-        isBook = True
-        bookPage = 1
-        bookQuestion = str(input('책과 관련된 정보를 입력해주세요 : '))
+        whatFunctionCul = str(input('책 A , 이미지는 B를 입력해주세요 : '))
 
-        while(isBook):
-            getPreschoolDataFromArcode(bookQuestion, bookPage)
+        if whatFunctionCul == 'A' or whatFunctionCul == 'a':
+            isBook = True
+            bookPage = 1
+            bookQuestion = str(input('책과 관련된 정보를 입력해주세요 : '))
 
-            bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
-            if bookPage == 3:
-                print("")
-                print("모든 결과를 열람하셨습니다. ")
-                bookPage = 1
-                isBook = False
-            elif bookBuffer == 'Y' or bookBuffer == 'y' :
-                bookPage += 1
-            elif bookBuffer == 'N' or bookBuffer == 'n':
-                bookPage = 1
-                isBook = False
+            while(isBook):
+                getPreschoolDataFromArcode(bookQuestion, bookPage)
 
-        pass
+                bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
+                if bookPage == 3:
+                    print("")
+                    print("모든 결과를 열람하셨습니다. ")
+                    bookPage = 1
+                    isBook = False
+                elif bookBuffer == 'Y' or bookBuffer == 'y' :
+                    bookPage += 1
+                elif bookBuffer == 'N' or bookBuffer == 'n':
+                    bookPage = 1
+                    isBook = False
+
+            pass
+        elif whatFunctionCul == 'B' or whatFunctionCul == 'b':
+            isMovie = True
+            moviePage = 1
+            movieQuestion = str(input('영화 제목을 입력해주세요 : '))
+
+            while (isMovie):
+                getMovieDataFromArcode(movieQuestion, moviePage)
+
+                movieBuffer = str(input('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
+                if moviePage == 3:
+                    print("")
+                    print("모든 결과를 열람하셨습니다. ")
+                    moviePage = 1
+                    isMovie = False
+                elif movieBuffer == 'Y' or movieBuffer == 'y':
+                    moviePage += 1
+                elif movieBuffer == 'N' or movieBuffer == 'n':
+                    moviePage = 1
+                    isMovie = False
+
+            pass
+
     elif menu == 'b':
         isTrip = True
         tripPage = 1
