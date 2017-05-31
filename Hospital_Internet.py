@@ -15,8 +15,8 @@ server = "apis.data.go.kr"
 #server = "apis.daum.net"
 
 # smtp 정보
-host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
+host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 
 
 def userURIBuilder(server, key, sidoCd, sgguCd):

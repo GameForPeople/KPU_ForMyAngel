@@ -3,83 +3,92 @@ from Preschool_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import urllib
+import http.client
+
 ##global
 conn = None
 #arcode = None   #지역번호
 
-regKey = '0c5747ff0e144b9ca77645c4ed19ef1b'
+regKey = '9dc253be6f5224567ede1f03b84a4e24'
+#regKey = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
-#regKey = '9dc253be6f5224567ede1f03b84a4e24'
-
-# 네이버 OpenAPI 접속 정보 information
-server = "api.childcare.go.kr"
-#server = "apis.daum.net"
+#server = "openapi.cpf.go.kr"
+#server = "api.childcare.go.kr"
+server = "apis.daum.net"
 
 # smtp 정보
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
 
 
-def userURIBuilder(server, key, arcode):
-    str = "http://" + server + "/mediate/rest/cpmsapi021/cpmsapi021/request" + "?"
-    str += "key=" + key + "&" + "arcode=" + arcode
-    return str
+def userURIBuilder(server, key, question, page):
+    str = "https://" + server + "/search/book" + "?"
 
-#http://api.childcare.go.kr/mediate/rest/cpmsapi021/cpmsapi021/request?key=50b8109640e3b5947a3788a03cfd151c&arcode=11380
+    hangul_utf8 = urllib.parse.quote(question)
+
+    if page == 1:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=1"
+    elif page == 2:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=2"
+    elif page == 3:
+        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=20" + "&pageno=3"
+
+    return str
 
 def connectOpenAPIServer():
     global conn, server
-    conn = HTTPConnection(server)
+    #conn = HTTPConnection(server)
+    conn = http.client.HTTPConnection(server)
 
 
-def getPreschoolDataFromArcode(arcode=11380):
+def getPreschoolDataFromArcode(area, page):
     global server, regKey, conn
 
-    print(" 1. 이부분이 오류야!!")
     if conn == None:
         connectOpenAPIServer()
 
-    uri = userURIBuilder(server, regKey, arcode)
+    uri = userURIBuilder(server, regKey, area, page)
+    conn.request("GET", uri)
     print(uri)
 
-    # 생활코딩 질문을 위해 함수부분을 추가합니다.
-    #def userURIBuilder(server, key, arcode):
-    #str = "http://" + server + "/mediate/rest/cpmsapi021/cpmsapi021/request" + "?"
-    #str += "key=" + key + "&" + "arcode=" + arcode
-    #return str
-
-
-    print(" 2. 이부분이 오류야!!")
-    conn.request("GET", uri)
-
-    print(" 3. 이부분이 오류야!!")
     req = conn.getresponse()
 
     print(req.status)
     if int(req.status) == 200:
-        print("유치원 정보를 모두 받아왔습니다")
-        return extractPreschoolData(req.read())
+        print("책 정보를 모두 받아왔습니다")
+        #return extractPreschoolData(req.read())
+        extractPreschoolData(req.read().decode('utf-8'))
+        return None
     else:
-        print("역시 유치원 정보는 받아오지 못했습니다.")
+        print("역시 책 정보는 받아오지 못했습니다.")
         return None
 
 
 def extractPreschoolData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
-    print(strXml)
+    #print(strXml)
     # PreschoolData(Book) 엘리먼트를 가져옵니다.
-    itemElements = tree.getiterator("item")  # return list type
-    print(itemElements)
-    for item in itemElements:
-        #isbn = item.find("isbn")
-        strTitle = item.find("crname")
-        strAddress = item.find("craddr")
-        strNumber = item.find("crtel")
+    #itemElements = tree.getiterator("item")  # return list type
+    #print(itemElements)
+    BookIndex = 1
 
-        print(strTitle)
-        if len(strTitle.text) > 0:
-            return {"주소": strAddress.text, "번호": strNumber.text}
+    for item in tree.iter("item"):
+        strAuthor = item.find("author")
+        strCategory = item.find("category")
+        strPrice = item.find("list_price")
+        strTitle = item.find("title")
+
+        if strTitle != None or strAuthor != None or strCategory != None or strPrice != None:
+            print(BookIndex)
+            print(strTitle.text)
+            if len(strTitle.text) > 0:
+                print("저자 : " + strAuthor.text, "분류 : " + strCategory.text, "가격 : " + strPrice.text)
+                print(" ")
+            BookIndex += 1
+        else:
+            return None
 
 
 def sendMain():

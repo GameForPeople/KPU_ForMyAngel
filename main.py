@@ -35,15 +35,51 @@ def printMenu():
 def launcherFunction(menu):
 
     if menu == 'a':
-        arccode = str(input ('arccode를 입력해주세요 : '))
-        #arccode = '11380'
-        getPreschoolDataFromArcode(arccode)
-        #ret = getPreschoolDataFromArcode(arccode)
-        #AddBook(ret)
+        isBook = True
+        bookPage = 1
+        bookQuestion = str(input('책과 관련된 정보를 입력해주세요 : '))
+
+        while(isBook):
+            getPreschoolDataFromArcode(bookQuestion, bookPage)
+
+            bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요'))
+            if bookPage == 3:
+                print("")
+                print("모든 결과를 열람하셨습니다. ")
+                bookPage = 1
+                isBook = False
+            elif bookBuffer == 'Y':
+                bookPage += 1
+            elif bookBuffer == 'N':
+                bookPage = 1
+                isBook = False
+
         pass
     elif menu == 'b':
-        areaCode = str(input ('areacode를 입력해주세요 : 31~  '))
-        getTripPlaceData(areaCode)
+        isTrip = True
+        tripPage = 1
+        whatFunctionTrip = str(input('지역에 따른 검색은 A, 가족 추천 코스를 원하시면 B를 입력해주세요'))
+        if whatFunctionTrip == 'a':
+            areaCode = str(input('원하시는 지역을 입력해주세요 : '))
+
+        while(isTrip):
+            if whatFunctionTrip == 'a':
+               getTripPlaceDataArea(areaCode, tripPage)
+            elif whatFunctionTrip == 'b':
+               getTripPlaceDataCate(tripPage)
+
+            tripBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요'))
+            if tripPage == 3:
+                print("")
+                print("모든 결과를 열람하셨습니다. ")
+                tripPage = 1
+                isTrip = False
+            elif tripBuffer == 'Y':
+                tripPage += 1
+            elif tripBuffer == 'N':
+                tripPage = 1
+                isTrip = False
+
         pass
     elif menu == 'c':
         big = str(input ('시도코드를 입력해주세요 :  110000~ '))

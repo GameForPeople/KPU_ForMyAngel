@@ -20,11 +20,12 @@ host = "smtp.gmail.com"  # Gmail SMTP ¼­¹ö ÁÖ¼Ò.
 port = "587"
 
 
-def userURIBuilder(server, key, areaCode):
+def userURIBuilderArea(server, key, areaCode, page):
     str = "http://" + server + "/openapi/service/rest/KorService/areaBasedList" + "?"
-    #for key in user.keys():
-    #    str += "key" + key + "=" + user[key] + "&"
-    str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&MobileOS=ETC&MobileApp=AppTesting"
+
+    if page == 1:
+        str += "ServiceKey=" + key + "&" + "areaCode=" + areaCode + "&numOfRows=20&pageNo=1" ‚
+                                                                "&MobileOS=ETC&MobileApp=AppTesting"
     return str
 
 #http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=ÀÎÁõÅ°&areaCode=35&MobileOS=ETC&MobileApp=AppTesting
@@ -34,18 +35,34 @@ def connectOpenAPIServer():
     conn = HTTPConnection(server)
 
 
-def getTripPlaceData(areaCode):
+def getTripPlaceDataArea(areaCode, page):
     global server, regKey, conn
     if conn == None:
         connectOpenAPIServer()
     # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, regKey, areaCode)  # ´ÙÀ½ °Ë»ö URL
+    uri = userURIBuilderArea(server, regKey, areaCode, page)  # ´ÙÀ½ °Ë»ö URL
     conn.request("GET", uri)
     print(uri)
 
     req = conn.getresponse()
 
+    if int(req.status) == 200:
+        print("³î°÷ Á¤º¸¸¦ ¸ðµÎ ¹Þ¾Æ¿Ô½À´Ï´Ù")
+        return extractTripPlaceData(req.read())
+    else:
+        print("¿ª½Ã ³î°÷ Á¤º¸´Â ¹Þ¾Æ¿ÀÁö ¸øÇß½À´Ï´Ù.")
+        return None
+
+def getTripPlaceDataCate(page):
+    global server, regKey, conn
+    if conn == None:
+        connectOpenAPIServer()
+    # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
+    uri = userURIBuilder(server, regKey, areaCode)  # ´ÙÀ½ °Ë»ö URL
+    conn.request("GET", uri)
+    print(uri)
+    req = conn.getresponse()
     if int(req.status) == 200:
         print("³î°÷ Á¤º¸¸¦ ¸ðµÎ ¹Þ¾Æ¿Ô½À´Ï´Ù")
         return extractTripPlaceData(req.read())
