@@ -42,7 +42,7 @@ def connectOpenAPIServer():
     conn = http.client.HTTPConnection(server)
 
 
-def getMovieDataFromArcode(area, page):
+def getMovieData(area, page):
     global server, regKey, conn
 
     if conn == None:

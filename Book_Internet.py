@@ -42,7 +42,7 @@ def connectOpenAPIServer():
     conn = http.client.HTTPConnection(server)
 
 
-def getPreschoolDataFromArcode(area, page):
+def getBookData(area, page):
     global server, regKey, conn
 
     if conn == None:
@@ -58,14 +58,14 @@ def getPreschoolDataFromArcode(area, page):
     if int(req.status) == 200:
         print("책 정보를 모두 받아왔습니다")
         #return extractPreschoolData(req.read())
-        extractPreschoolData(req.read().decode('utf-8'))
+        extractBookData(req.read().decode('utf-8'))
         return None
     else:
         print("역시 책 정보는 받아오지 못했습니다.")
         return None
 
 
-def extractPreschoolData(strXml):
+def extractBookData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
