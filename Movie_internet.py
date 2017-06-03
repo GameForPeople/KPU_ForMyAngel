@@ -8,13 +8,9 @@ import http.client
 
 ##global
 conn = None
-#arcode = None   #지역번호
 
 regKey = '9dc253be6f5224567ede1f03b84a4e24'
-#regKey = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
-#server = "openapi.cpf.go.kr"
-#server = "api.childcare.go.kr"
 server = "apis.daum.net"
 
 # smtp 정보
@@ -68,10 +64,6 @@ def getMovieData(area, page):
 def extractMovieData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
-    #print(strXml)
-    # PreschoolData(Book) 엘리먼트를 가져옵니다.
-    #itemElements = tree.getiterator("item")  # return list type
-    #print(itemElements)
     MovieIndex = 1
 
     for item in tree.iter("item"):
@@ -146,7 +138,7 @@ class MyHandler(BaseHTTPRequestHandler):
         keyword, value = parts.query.split('=', 1)
 
         if keyword == "title":
-            html = MakeHtmlDoc(SearchBookTitle(value))  # keyword에 해당하는 책을 검색해서 HTML로 전환합니다.
+            html = MakeHtmlDoc(SearchBookTitle(value))
             ##헤더 부분을 작성.
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -170,6 +162,6 @@ def startWebService():
 def checkConnection():
     global conn
     if conn == None:
-        print("Error : 연결 실패")
+        print("Error : 연결을 실패했습니다.")
         return False
     return True
