@@ -7,7 +7,6 @@ import http.client
 
 ##global
 conn = None
-#arcode = None   #지역번호
 
 Key = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
@@ -15,7 +14,6 @@ Key = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGs
 
 # 네이버 OpenAPI 접속 정보 information
 server = "apis.data.go.kr"
-#server = "apis.daum.net"
 
 # smtp 정보
 port = "587"
@@ -24,8 +22,6 @@ host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 
 def userURIBuilder(server, key, sidoCd, sgguCd, addr, page):
     str = "http://" + server + "/B551182/hospInfoService/getHospBasisList" + "?"
-    #for key in user.keys():
-    #    str += "key" + key + "=" + user[key] + "&"
     hangul_utf8 = urllib.parse.quote(addr)
 #110000 110019
     if page == 1:
@@ -46,7 +42,6 @@ def getHospitalData(sidoCd, sgguCd, addr, page):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
-    # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
     uri = userURIBuilder(server, Key, sidoCd, sgguCd, addr, page)  # 다음 검색 URL
     conn.request("GET", uri)
@@ -84,7 +79,6 @@ def extractHospitalData(strXml):
         print()
         HospitalIndex += 1
 
-        #print("  " + tripPlaceTitle.text + "  번호 : " + tripPlaceTel + "   주소 : " + tripPlaceAddress)
 
     #####################
     #itemElements = tree.getiterator("item")  # return list type
