@@ -9,7 +9,7 @@ global_x= 20
 
 def InitTopText():
     TempFont = font.Font(g_Tk, size=20, weight='bold', family = 'Consolas')
-    MainText = Label(g_Tk, font = TempFont, text="[서울시 근린시설 검색 App]")
+    MainText = Label(g_Tk, font = TempFont, text="[For My Angel]")
     MainText.pack()
     MainText.place(x=20)
 
@@ -25,10 +25,12 @@ def InitSearchListBox():
                             width=10, height=1, borderwidth=12, relief='ridge',
                             yscrollcommand=ListBoxScrollbar.set)
 
-    SearchListBox.insert(1, "도서관")
-    SearchListBox.insert(2, "모범음식점")
-    SearchListBox.insert(3, "마트")
-    SearchListBox.insert(4, "문화공간")
+    SearchListBox.insert(1, "문화")
+    SearchListBox.insert(2, "병원")
+    SearchListBox.insert(3, "영화")
+    SearchListBox.insert(4, "가격")
+    SearchListBox.insert(5, "여행")
+
     SearchListBox.pack()
     SearchListBox.place(x=10, y=50)
 
