@@ -16,6 +16,7 @@ def InitTopText():
 
 def InitSearchListBox():
     global SearchListBox
+    #
     ListBoxScrollbar = Scrollbar(g_Tk)
     ListBoxScrollbar.pack()
     ListBoxScrollbar.place(x=150, y=50)
@@ -54,13 +55,13 @@ def SearchButtonAction():
     global SearchListBox
 
     RenderText.configure(state='normal')
-    RenderText.delete(0.0, END)  # ?댁쟾 異쒕젰 ?띿뒪??紐⑤몢 ??젣
-    iSearchIndex = SearchListBox.curselection()[0]  # 由ъ뒪?몃컯???몃뜳??媛?몄삤湲?
-    if iSearchIndex == 0:  # ?꾩꽌愿
+    RenderText.delete(0.0, END)
+    iSearchIndex = SearchListBox.curselection()[0]
+    if iSearchIndex == 0:
         SearchLibrary()
-    elif iSearchIndex == 1:  # 紐⑤쾾?뚯떇
+    elif iSearchIndex == 1:
         pass#SearchGoodFoodService()
-    elif iSearchIndex == 2:  # 留덉폆
+    elif iSearchIndex == 2:
         pass#SearchMarket()
     elif iSearchIndex == 3:
         pass#SearchCultural()
@@ -91,17 +92,16 @@ def SearchLibrary():
                 if item.nodeName == "row":
                     subitems = item.childNodes
 
-                    if subitems[3].firstChild.nodeValue == InputLabel.get():  # 援??대쫫??媛숈쓣 寃쎌슦
+                    if subitems[3].firstChild.nodeValue == InputLabel.get():
                         pass
-                    elif subitems[5].firstChild.nodeValue == InputLabel.get():  # ???대쫫??媛숈쓣 寃쎌슦
+                    elif subitems[5].firstChild.nodeValue == InputLabel.get():
                         pass
                     else:
                         continue
 
-                    # ?곗씠???쎌엯 援ш컙. ?곕씫泥섍? ?놁쓣 ?뚯뿉??"-"???ｋ뒗??
                     if subitems[29].firstChild is not None:
                         tel = str(subitems[29].firstChild.nodeValue)
-                        pass  # ?꾩떆
+                        pass
                         if tel[0] is not '0':
                             tel = "02-" + tel
                             pass
