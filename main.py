@@ -17,7 +17,12 @@ def printMenu():
     print("Show 놀곳 : B ")
     print("Show 의료기관 : C ")
     print("Show 가격정보 : D ")
+    print("=======부가기능=========")
+    print("이메일 보내기 : D ")
+    print("너는 뭐야? : D ")
+    print("======================")
     print("프로그램 종료 : Q ")
+
 
 """
     print("Load xml:  l")
