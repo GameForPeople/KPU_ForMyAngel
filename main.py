@@ -6,6 +6,7 @@ from Movie_internet import *
 from TripPlace_Internet import *
 from Hospital_Internet import *
 from Product_Internet import *
+from ThinterUI import *
 
 #### Menu  implementation
 def printMenu():

@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import font
+
+
 import tkinter.messagebox
 g_Tk = Tk()
 g_Tk.geometry("400x600+750+200")
@@ -140,16 +142,16 @@ def InitRenderText():
 
     RenderText.configure(state='disabled')
 
-
-InitTopText()
-InitSearchListBox()
-InitInputLabel()
-InitSearchButton()
-InitRenderText()
+def ThinterUI():
+    InitTopText()
+    InitSearchListBox()
+    InitInputLabel()
+    InitSearchButton()
+    InitRenderText()
 
 #InitSendEmailButton()
 #InitSortListBox()
 #InitSortButton()
 
 
-g_Tk.mainloop()
+    g_Tk.mainloop()
