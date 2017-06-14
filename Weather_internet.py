@@ -1,86 +1,117 @@
 # -*- coding: cp949 -*-
-from Movie_XML import *
+from Weather_XML import *
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
-import urllib
-import http.client
+from datetime import datetime
 
 ##global
 conn = None
+#arcode = None   #지역번호
 
-regKey = '9dc253be6f5224567ede1f03b84a4e24'
+regKey = 'nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZMB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D'
 
-server = "apis.daum.net"
+#regKey = '9dc253be6f5224567ede1f03b84a4e24'
+
+# 네이버 OpenAPI 접속 정보 information
+server = "newsky2.kma.go.kr"
+#server = "apis.daum.net"
+
+#http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib?ServiceKey=nHhF%2FXpBrln%2Fp4eurQr9Hn0sY0dZ
+# MB9Te%2ByR5uzHoZKpC%2BoE3ZwREHfHX3QJ%2FGsCXTm6%2FLgAZjZKqAEHLCy4pw%3D%3D&base_date=20170614&base_time=1000&nx=55&ny=
+# 127&pageNo=5&numOfRows=1
+
 
 # smtp 정보
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 port = "587"
 
 
-def userURIBuilder(server, key, question, page):
-    str = "https://" + server + "/contents/movie" + "?"
+def userURIBuilderWheather(server, key):
+    str = "http://" + server + "/service/SecndSrtpdFrcstInfoService2/ForecastGrib" + "?"
+    now = datetime.now()
 
-    hangul_utf8 = urllib.parse.quote(question)
+    str += "ServiceKey=" + key + "&" + "base_date=%d" %(now.year)
+    if now.month < 10:
+        str += "0%d" %(now.month)
+    elif now.month >= 10:
+        str += "%d" %(now.month)
 
-    if page == 1:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=1"
-    elif page == 2:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=2"
-    elif page == 3:
-        str += "apikey=" + key + "&" + "q=" + hangul_utf8 + "&output=xml&result=5" + "&pageno=3"
+    if now.day < 10:
+        str += "0%d" %(now.day)
+    elif now.day >= 10:
+        str += "%d" %(now.day)
+
+    str += "&base_time="
+
+    if now.hour < 10:
+        str += "0%d" %(now.hour)
+    elif now.hour >= 10:
+        str += "%d" %(now.hour)
+
+    str += "00&nx=56&ny=122&pageNo=5&numOfRows=1"
 
     return str
 
 def connectOpenAPIServer():
     global conn, server
-    #conn = HTTPConnection(server)
-    conn = http.client.HTTPConnection(server)
+    conn = HTTPConnection(server)
 
-
-def getMovieData(area, page):
+def getWeatherData():
     global server, regKey, conn
-
     if conn == None:
         connectOpenAPIServer()
+    # uri = userURIBuilder(server, key=regKey, query='%20', display="1", start="1", target="book_adv", d_isbn=isbn)
 
-    uri = userURIBuilder(server, regKey, area, page)
+    uri = userURIBuilderWheather(server, regKey)  # 다음 검색 URL
     conn.request("GET", uri)
     print(uri)
 
     req = conn.getresponse()
 
-    print(req.status)
     if int(req.status) == 200:
-        print("영화 정보를 모두 받아왔습니다")
-        #return extractPreschoolData(req.read())
-        extractMovieData(req.read().decode('utf-8'))
-        return None
+        print("놀곳 정보를 모두 받아왔습니다")
+        return extractWheatherData(req.read())
     else:
-        print("역시 영화 정보는 받아오지 못했습니다.")
+        print("역시 놀곳 정보는 받아오지 못했습니다.")
         return None
 
 
-def extractMovieData(strXml):
+#끄집어 내는 곳
+def extractWheatherData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
-    MovieIndex = 1
+    #tripPlaceIndex = 1
 
     for item in tree.iter("item"):
-        strDirector = item.find("director")
-        strGenre = item.find("genre")
-        strActor = item.find("actor")
-        strTitle = item.find("title")
+        weatherCategory = item.find("category")
+        weatherValue= item.find("obsrValue")
 
-        if strTitle != None or strDirector != None or strGenre != None or strActor != None:
-            print(MovieIndex)
-            print(strTitle.text)
-            if len(strTitle.text) > 0:
-                print("감독 : " + strDirector.text, "장르 : " + strGenre.text, "주연 : " + strActor.text)
-                print(" ")
-            MovieIndex += 1
-        else:
-            return None
+        if weatherCategory.text == "SKY":
+            if weatherValue.text == "1":
+                print("맑음")
+            elif weatherValue.text == "2":
+                print("구름조금")
+            elif weatherValue.text == "3":
+                print("구름많이")
+            elif weatherValue.text == "4":
+                print("흐림")
+
+        print()
+
+
+    #####################
+    #itemElements = tree.getiterator("item")  # return list type
+    #print(itemElements)
+    #for item in itemElements:
+    #    #isbn = item.find("isbn")
+    #    strTitle = item.find("title")
+    #    strAddress = item.find("add1")
+    #    strNumber = item.find("tel")
+    #    print(item.get("title"))
+    #    print(strTitle)
+    #    #if len(strTitle.text) > 0:
+    #    return {"주소": strAddress, "번호": strNumber}
+    ########################
 
 
 def sendMain():
@@ -138,7 +169,7 @@ class MyHandler(BaseHTTPRequestHandler):
         keyword, value = parts.query.split('=', 1)
 
         if keyword == "title":
-            html = MakeHtmlDoc(SearchBookTitle(value))
+            html = MakeHtmlDoc(SearchBookTitle(value))  # keyword에 해당하는 책을 검색해서 HTML로 전환합니다.
             ##헤더 부분을 작성.
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -162,6 +193,6 @@ def startWebService():
 def checkConnection():
     global conn
     if conn == None:
-        print("Error : 연결을 실패했습니다.")
+        print("Error : 연결 실패")
         return False
     return True

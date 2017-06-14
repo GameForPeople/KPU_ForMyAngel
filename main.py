@@ -2,7 +2,7 @@
 loopFlag = 1
 
 from Book_Internet import *
-from Movie_internet import *
+from Weather_internet import *
 from TripPlace_Internet import *
 from Hospital_Internet import *
 from Product_Internet import *
@@ -43,7 +43,7 @@ def printMenu():
 def launcherFunction(menu):
 
     if menu == 'a':
-        whatFunctionCul = str(input('책 A , 이미지는 B를 입력해주세요 : '))
+        whatFunctionCul = str(input('책 A , 날씨는 B를 입력해주세요 : '))
 
         if whatFunctionCul == 'A' or whatFunctionCul == 'a':
             isBook = True
@@ -67,26 +67,8 @@ def launcherFunction(menu):
 
             pass
         elif whatFunctionCul == 'B' or whatFunctionCul == 'b':
-            isMovie = True
-            moviePage = 1
-            movieQuestion = str(input('영화 제목을 입력해주세요 : '))
 
-            while (isMovie):
-                getMovieData(movieQuestion, moviePage)
-
-                movieBuffer = str(input('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
-                if moviePage == 3:
-                    print("")
-                    print("모든 결과를 열람하셨습니다. ")
-                    moviePage = 1
-                    isMovie = False
-                elif movieBuffer == 'Y' or movieBuffer == 'y':
-                    moviePage += 1
-                elif movieBuffer == 'N' or movieBuffer == 'n':
-                    moviePage = 1
-                    isMovie = False
-
-            pass
+                getWeatherData()
 
     elif menu == 'b':
         isTrip = True
