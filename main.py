@@ -51,7 +51,7 @@ def launcherFunction(menu):
             bookQuestion = str(input('책과 관련된 정보를 입력해주세요 : '))
 
             while(isBook):
-                getBookData(bookQuestion, bookPage)
+                #getBookData(bookQuestion, bookPage)
 
                 bookBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
                 if bookPage == 3:

@@ -1,5 +1,7 @@
 # -*- coding: cp949 -*-
 from Book_XML import *
+from tkinter import *
+from tkinter import font
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -37,7 +39,7 @@ def connectOpenAPIServer():
     conn = http.client.HTTPConnection(server)
 
 
-def getBookData(area, page):
+def getBookData(g_Tk, area, page):
     global server, regKey, conn
 
     if conn == None:
@@ -53,18 +55,21 @@ def getBookData(area, page):
     if int(req.status) == 200:
         print("책 정보를 모두 받아왔습니다")
         #return extractPreschoolData(req.read())
-        extractBookData(req.read().decode('utf-8'))
-        return None
+
+        return extractBookData(g_Tk, req.read().decode('utf-8'))
     else:
         print("역시 책 정보는 받아오지 못했습니다.")
         return None
 
 
-def extractBookData(strXml):
+def extractBookData(g_Tk, strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
 
     BookIndex = 1
+
+    strOut = ""
+
 
     for item in tree.iter("item"):
         strAuthor = item.find("author")
@@ -72,16 +77,28 @@ def extractBookData(strXml):
         strPrice = item.find("list_price")
         strTitle = item.find("title")
 
-        if strTitle != None or strAuthor != None or strCategory != None or strPrice != None:
+        if strTitle != None and strAuthor != None and strCategory != None and strPrice != None:
             print(BookIndex)
             print(strTitle.text)
             if len(strTitle.text) > 0:
                 print("저자 : " + strAuthor.text, "분류 : " + strCategory.text, "가격 : " + strPrice.text)
                 print(" ")
+
+            strOut += """
+            """
+            strOut += "%d" %BookIndex + """
+            """
+            strOut += "  책 제목 : " + strTitle.text + """
+            """ + "  저자 : " + strAuthor.text + """
+            """ + "  분류 : " + strCategory.text + """
+            """ + "  가격 : " + strPrice.text + """
+            """
+
             BookIndex += 1
         else:
             return None
 
+    return strOut
 
 def sendMain():
     global host, port
