@@ -69,7 +69,7 @@ def getWeatherData():
     req = conn.getresponse()
 
     if int(req.status) == 200:
-        print("놀곳 정보를 모두 받아왔습니다")
+        print("날씨 정보를 모두 받아왔습니다")
         return extractWheatherData(req.read())
     else:
         print("역시 놀곳 정보는 받아오지 못했습니다.")
