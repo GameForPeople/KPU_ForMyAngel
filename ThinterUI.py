@@ -16,6 +16,7 @@ g_Tk.geometry("480x800+700+100")
 DataList = []
 
 ButtonFont = font.Font(g_Tk, size=30, weight='bold', family='Consolas') #정식 버튼 글씨체
+LittleButtonFont = font.Font(g_Tk, size=16, weight='bold', family='Consolas') #정식 버튼 글씨체
 
 photo_0 = PhotoImage(file="loadImg_0.png")  # 디폴트 이미지 파일
 photo_1 = PhotoImage(file="loadImg_1.png")  # 디폴트 이미지 파일
@@ -34,14 +35,11 @@ isAni = False
 INSERT_BUFFER = 0
 
 ENTRY_BUFFER = Entry(g_Tk)
-
 YES_BUTTON_BUFFER = Button(g_Tk)
 NO_BUTTON_BUFFER = Button(g_Tk)
 INSERT_BUTTON_BUFFER = Button(g_Tk)
-
 SCROLL_BAR = Scrollbar(g_Tk)
 RENDER_TEXT = Text(g_Tk)
-
 LABEL_BUFFER = Label(g_Tk)
 
 imageLabel = Label(g_Tk, image=photo_0)
@@ -56,54 +54,62 @@ Page = 0
 def InsertBookInfo():
     global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
 
-
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
+
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
 
     Page += 1
 
-    bookQuestion = ENTRY_BUFFER.get()
-    print(bookQuestion)
-
-    strOut = getBookData(g_Tk, bookQuestion, Page)
-
-    SCROLL_BAR = Scrollbar(g_Tk)
-    SCROLL_BAR.pack()
-    SCROLL_BAR.place(x=470, y=200)
-    TempFont = font.Font(g_Tk, size=10, family='Consolas')
-    RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
-                      yscrollcommand=SCROLL_BAR.set)
-    RENDER_TEXT.pack()
-    RENDER_TEXT.place(x=16, y=180)
-    SCROLL_BAR.config(command=RENDER_TEXT.yview)
-    SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
-    RENDER_TEXT.configure(state='normal')
-    RENDER_TEXT.insert(INSERT, strOut)
-
-    #F = lambda bookBuffer, value : bookBuffer + value
-
-    BUTTON_BUFFER = Button(g_Tk, text="Next Page!", command=InsertBookInfo)
-    BUTTON_BUFFER.pack()
-    BUTTON_BUFFER.place(x=250, y=750)
-
-    BUTTON_BUFFER_2 = Button(g_Tk, text="   Quit   ", command=DeleteBookInfo)
-    BUTTON_BUFFER_2.pack()
-    BUTTON_BUFFER_2.place(x=50, y=750)
 
     if Page == 4:
         print("")
         print("모든 결과를 열람하셨습니다. ")
         Page = 0
-        DeleteBookInfo()
+        DeleteInfo()
         InitMenu()
+        return
 
-def DeleteBookInfo():
+    else:
+        bookQuestion = ENTRY_BUFFER.get()
+        print(bookQuestion)
+
+        strOut = getBookData(g_Tk, bookQuestion, Page)
+
+        SCROLL_BAR = Scrollbar(g_Tk)
+        SCROLL_BAR.pack()
+        SCROLL_BAR.place(x=470, y=200)
+        TempFont = font.Font(g_Tk, size=10, family='Consolas')
+        RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
+                          yscrollcommand=SCROLL_BAR.set)
+        RENDER_TEXT.pack()
+        RENDER_TEXT.place(x=16, y=180)
+        SCROLL_BAR.config(command=RENDER_TEXT.yview)
+        SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
+        RENDER_TEXT.configure(state='normal')
+        RENDER_TEXT.insert(INSERT, strOut)
+
+        #F = lambda bookBuffer, value : bookBuffer + value
+
+        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertBookInfo)
+        YES_BUTTON_BUFFER.pack()
+        YES_BUTTON_BUFFER.place(x=320, y=730)
+        YES_BUTTON_BUFFER["bg"] = "white"
+        YES_BUTTON_BUFFER["fg"] = "pink"
+
+        NO_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="   Quit   ", command=DeleteInfo)
+        NO_BUTTON_BUFFER.pack()
+        NO_BUTTON_BUFFER.place(x=20, y=730)
+        NO_BUTTON_BUFFER["bg"] = "white"
+        NO_BUTTON_BUFFER["fg"] = "pink"
+
+def DeleteInfo():
     global YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, INSERT_BUTTON_BUFFER
 
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
+
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
 
@@ -129,6 +135,210 @@ def FunctionBook():
     INSERT_BUTTON_BUFFER.pack()
     INSERT_BUTTON_BUFFER.place(x=200, y=500)
 
+def InsertHospInfo():
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+
+    YES_BUTTON_BUFFER.destroy()
+    NO_BUTTON_BUFFER.destroy()
+
+    SCROLL_BAR.destroy()
+    RENDER_TEXT.destroy()
+
+    Page += 1
+
+    if Page == 4:
+        print("")
+        print("모든 결과를 열람하셨습니다. ")
+        Page = 0
+        DeleteInfo()
+        InitMenu()
+        return
+
+    else:
+        hospQuestion = ENTRY_BUFFER.get()
+        print(hospQuestion)
+
+        strOut = getHospitalData(hospQuestion, Page)
+
+        SCROLL_BAR = Scrollbar(g_Tk)
+        SCROLL_BAR.pack()
+        SCROLL_BAR.place(x=470, y=200)
+        TempFont = font.Font(g_Tk, size=10, family='Consolas')
+        RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
+                          yscrollcommand=SCROLL_BAR.set)
+        RENDER_TEXT.pack()
+        RENDER_TEXT.place(x=16, y=180)
+        SCROLL_BAR.config(command=RENDER_TEXT.yview)
+        SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
+        RENDER_TEXT.configure(state='normal')
+        RENDER_TEXT.insert(INSERT, strOut)
+
+        #F = lambda bookBuffer, value : bookBuffer + value
+
+        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertHospInfo)
+        YES_BUTTON_BUFFER.pack()
+        YES_BUTTON_BUFFER.place(x=320, y=730)
+        YES_BUTTON_BUFFER["bg"] = "white"
+        YES_BUTTON_BUFFER["fg"] = "pink"
+
+        NO_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="   Quit   ", command=DeleteInfo)
+        NO_BUTTON_BUFFER.pack()
+        NO_BUTTON_BUFFER.place(x=20, y=730)
+        NO_BUTTON_BUFFER["bg"] = "white"
+        NO_BUTTON_BUFFER["fg"] = "pink"
+
+def FunctionHosp():
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+
+    DestoryMenu()
+
+    LABEL_BUFFER = Label(g_Tk, text="원하는 읍,면,동을 입력해주세요 : ")
+    LABEL_BUFFER.place(x=50, y=200)
+
+    ENTRY_BUFFER = Entry(g_Tk)
+    ENTRY_BUFFER.pack()
+    ENTRY_BUFFER.place(x=200, y=200)
+
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertHospInfo)
+    INSERT_BUTTON_BUFFER.pack()
+    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+
+def InsertItemInfo():
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+
+    YES_BUTTON_BUFFER.destroy()
+    NO_BUTTON_BUFFER.destroy()
+
+    SCROLL_BAR.destroy()
+    RENDER_TEXT.destroy()
+
+    Page += 1
+
+    if Page == 4:
+        print("")
+        print("모든 결과를 열람하셨습니다. ")
+        Page = 0
+        DeleteInfo()
+        InitMenu()
+        return
+
+    else:
+        itemQuestion = ENTRY_BUFFER.get()
+        print(itemQuestion)
+
+        strOut = getProductData(g_Tk, itemQuestion, Page)
+
+        SCROLL_BAR = Scrollbar(g_Tk)
+        SCROLL_BAR.pack()
+        SCROLL_BAR.place(x=470, y=200)
+        TempFont = font.Font(g_Tk, size=10, family='Consolas')
+        RENDER_TEXT = Text(g_Tk, width=60, height=20, borderwidth=12, relief='ridge',
+                          yscrollcommand=SCROLL_BAR.set)
+        RENDER_TEXT.pack()
+        RENDER_TEXT.place(x=16, y=400)
+        SCROLL_BAR.config(command=RENDER_TEXT.yview)
+        SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
+        RENDER_TEXT.configure(state='normal')
+        RENDER_TEXT.insert(INSERT, strOut)
+
+
+        #F = lambda bookBuffer, value : bookBuffer + value
+
+        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertItemInfo)
+        YES_BUTTON_BUFFER.pack()
+        YES_BUTTON_BUFFER.place(x=320, y=730)
+        YES_BUTTON_BUFFER["bg"] = "white"
+        YES_BUTTON_BUFFER["fg"] = "pink"
+
+        NO_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="   Quit   ", command=DeleteInfo)
+        NO_BUTTON_BUFFER.pack()
+        NO_BUTTON_BUFFER.place(x=20, y=730)
+        NO_BUTTON_BUFFER["bg"] = "white"
+        NO_BUTTON_BUFFER["fg"] = "pink"
+
+def FunctionItem():
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+
+    DestoryMenu()
+
+    LABEL_BUFFER = Label(g_Tk, text="원하는 상품종류를 입력해주세요 : ")
+    LABEL_BUFFER.place(x=50, y=400)
+
+    ENTRY_BUFFER = Entry(g_Tk)
+    ENTRY_BUFFER.pack()
+    ENTRY_BUFFER.place(x=200, y=400)
+
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertItemInfo)
+    INSERT_BUTTON_BUFFER.pack()
+    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+
+def InsertTripInfo():
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+
+    YES_BUTTON_BUFFER.destroy()
+    NO_BUTTON_BUFFER.destroy()
+
+    SCROLL_BAR.destroy()
+    RENDER_TEXT.destroy()
+
+    Page += 1
+
+    if Page == 4:
+        print("")
+        print("모든 결과를 열람하셨습니다. ")
+        Page = 0
+        DeleteInfo()
+        InitMenu()
+        return
+
+    else:
+        tripQuestion = ENTRY_BUFFER.get()
+        print(tripQuestion)
+
+        strOut = getTripPlaceDataArea(tripQuestion, Page)
+
+        SCROLL_BAR = Scrollbar(g_Tk)
+        SCROLL_BAR.pack()
+        SCROLL_BAR.place(x=470, y=200)
+        TempFont = font.Font(g_Tk, size=10, family='Consolas')
+        RENDER_TEXT = Text(g_Tk, width=60, height=20, borderwidth=12, relief='ridge',
+                          yscrollcommand=SCROLL_BAR.set)
+        RENDER_TEXT.pack()
+        RENDER_TEXT.place(x=16, y=400)
+        SCROLL_BAR.config(command=RENDER_TEXT.yview)
+        SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
+        RENDER_TEXT.configure(state='normal')
+        RENDER_TEXT.insert(INSERT, strOut)
+
+        #F = lambda bookBuffer, value : bookBuffer + value
+
+        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertTripInfo)
+        YES_BUTTON_BUFFER.pack()
+        YES_BUTTON_BUFFER.place(x=320, y=730)
+        YES_BUTTON_BUFFER["bg"] = "white"
+        YES_BUTTON_BUFFER["fg"] = "pink"
+
+        NO_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="   Quit   ", command=DeleteInfo)
+        NO_BUTTON_BUFFER.pack()
+        NO_BUTTON_BUFFER.place(x=20, y=730)
+        NO_BUTTON_BUFFER["bg"] = "white"
+        NO_BUTTON_BUFFER["fg"] = "pink"
+
+def FunctionTrip():
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+
+    DestoryMenu()
+
+    LABEL_BUFFER = Label(g_Tk, text="원하는 지역을 입력해주세요 1 서울 2 인천 3 대전 4 대구 5광주 6 부산 7 울산 8 세종 : ")
+    LABEL_BUFFER.place(x=50, y=400)
+
+    ENTRY_BUFFER = Entry(g_Tk)
+    ENTRY_BUFFER.pack()
+    ENTRY_BUFFER.place(x=50, y=500)
+
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertTripInfo)
+    INSERT_BUTTON_BUFFER.pack()
+    INSERT_BUTTON_BUFFER.place(x=200, y=500)
 
 bookButton = Button(g_Tk)
 hospitalButton = Button(g_Tk)
@@ -141,10 +351,10 @@ def InitMenu():
     simpleX = 480 / 2
     simpleY = 800 / 2
 
-    bookButton = Button(g_Tk, font=ButtonFont, text="BOOK", command=FunctionBook)
-    hospitalButton = Button(g_Tk, font=ButtonFont, text="병원", command=FunctionBook)
-    productButton = Button(g_Tk, font=ButtonFont, text="가격정보", command=FunctionBook)
-    tripplaceButton = Button(g_Tk, font=ButtonFont, text="관광지", command=FunctionBook)
+    bookButton = Button(g_Tk, font=ButtonFont, text=    " BOOK ", command=FunctionBook)
+    hospitalButton = Button(g_Tk, font=ButtonFont, text=" HOSP ", command=FunctionHosp)
+    productButton = Button(g_Tk, font=ButtonFont, text= " ITEM ", command=FunctionItem)
+    tripplaceButton = Button(g_Tk, font=ButtonFont,text=" TOUR ", command=FunctionTrip)
 
     bookButton.pack()
     bookButton.place(x=simpleX - 200, y= simpleY + 100)
@@ -224,7 +434,6 @@ def clock():
 
     if isAni:
         changeImg()
-
 
 
 
@@ -359,7 +568,7 @@ def InitRenderText():
 
 #def ThinterUI():
 
-clock()
+#clock()
 
 InitMenu()
 """

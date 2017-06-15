@@ -105,7 +105,7 @@ def launcherFunction(menu):
         hosAddr = str(input ('읍남동을 입력해주세요 : '))
 
         while(isHos):
-            getHospitalData(big, little, hosAddr,  hosPage)
+            getHospitalData( hosAddr,  hosPage)
 
             hosBuffer = str(input ('다음페이지를 보시려면 Y, 다른 기능을 원하시면 N을 입력해주세요 : '))
             if hosPage == 3:

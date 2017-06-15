@@ -20,16 +20,23 @@ port = "587"
 host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
 
 
-def userURIBuilder(server, key, sidoCd, sgguCd, addr, page):
+def userURIBuilder(server, key, addr, page):
     str = "http://" + server + "/B551182/hospInfoService/getHospBasisList" + "?"
     hangul_utf8 = urllib.parse.quote(addr)
 #110000 110019
+    #if page == 1:
+    #    str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
+    #elif page == 2:
+    #    str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
+    #elif page == 3:
+    #    str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
+
     if page == 1:
-        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
+        str += "emdongNm=" + hangul_utf8 + "&pageNo=1"+ "&ServiceKey=" + key
     elif page == 2:
-        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
+        str += "emdongNm=" + hangul_utf8 + "&pageNo=2"+ "&ServiceKey=" + key
     elif page == 3:
-        str += "sidoCd="+ sidoCd +"&" + "sgguCd="+sgguCd+"&emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
+        str += "emdongNm=" + hangul_utf8 + "&pageNo=3"+ "&ServiceKey=" + key
 
     return str
 
@@ -38,12 +45,12 @@ def connectOpenAPIServer():
     #conn = HTTPConnection(server)
     conn = http.client.HTTPConnection(server)
 
-def getHospitalData(sidoCd, sgguCd, addr, page):
+def getHospitalData(addr, page):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
 
-    uri = userURIBuilder(server, Key, sidoCd, sgguCd, addr, page)  # 다음 검색 URL
+    uri = userURIBuilder(server, Key, addr, page)  # 다음 검색 URL
     conn.request("GET", uri)
     print(uri)
 
@@ -64,6 +71,9 @@ def extractHospitalData(strXml):
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
     # HospitalData(Book) 엘리먼트를 가져옵니다.
+
+    strOut = ""
+
     HospitalIndex = 1
     ####################성공한코듴ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왕좋고요!!!!
     for item in tree.iter("item"):
@@ -77,9 +87,19 @@ def extractHospitalData(strXml):
         if HospitalTel != None:
             print(HospitalTel.text)
         print()
+
+        strOut += """
+                    """
+        strOut += "%d" % HospitalIndex + """
+                    """
+        strOut += "  병원 이름 : " + HospitalTitle.text + """
+                    """ + "  주소 : " + HospitalAddress.text + """
+                    """ + "  번호 : " + HospitalTel.text + """
+                    """
+
         HospitalIndex += 1
 
-
+    return strOut
     #####################
     #itemElements = tree.getiterator("item")  # return list type
     #print(itemElements)

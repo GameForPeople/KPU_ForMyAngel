@@ -4,7 +4,13 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import urllib
 import http.client
+import urllib.request
 
+from tkinter import *
+
+import tkinter as tk
+from PIL import Image, ImageTk
+from io import BytesIO
 
 ##global
 conn = None
@@ -43,7 +49,7 @@ def connectOpenAPIServer():
     #conn = HTTPConnection(server)
     conn = http.client.HTTPConnection("apis.daum.net")
 
-def getProductData(question, page):
+def getProductData(g_Tk, question, page):
     global server, Key, conn
     if conn == None:
         connectOpenAPIServer()
@@ -59,40 +65,83 @@ def getProductData(question, page):
     if int(req.status) == 200:
         print("물품 정보를 모두 받아왔습니다")
         #return extractProductData(req.read())
-        return extractProductData(req.read().decode('utf-8'))
+        return extractProductData(g_Tk, req.read().decode('utf-8'))
     else:
         print("역시 물품 정보는 받아오지 못했습니다.")
         return None
 
 
 #끄집어 내는 곳
-def extractProductData(strXml):
+def extractProductData(g_Tk, strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
     # ProductData(Book) 엘리먼트를 가져옵니다.
     ProductIndex = 1
+    strOut = ""
+
     ####################성공한코듴ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왕좋고요!!!!
     for item in tree.iter("item"):
         ProductTitle = item.find("title")
         ProductPrice = item.find("price_min")
         ProductBrand = item.find("brand")
         ProductCategory = item.find("category_name")
+        ProductImg = item.find("image_url")
     #<category_name>
 
         print(ProductIndex)
 
+        strOut += """
+        """
+        strOut += "%d" % ProductIndex + """
+        """
+
         if ProductBrand != None:
             print(ProductBrand.text)
+            strOut += "제품 브랜드 : " + ProductBrand.text + """
+            """
 
         print(ProductTitle.text)
         print(ProductCategory.text)
 
+        strOut += "제품 이름 : " + ProductTitle.text + """
+        """
+        strOut += "제품 분류 : " + ProductTitle.text + """
+        """
+
         if ProductPrice != None:
             print(ProductPrice.text)
+            strOut += "제품 가격 : " + ProductTitle.text + """
+            """
+
+        if ProductImg != None:
+            print(ProductImg.text)
+
+            urllib.request.urlretrieve(ProductImg.text, "productImg.jpg")
+
+            #imgPath = "productImg.jpg"
+            #photo = PhotoImage(file=imgPath)
+            #label = Label(image=photo)
+            #label.image = photo  # keep a reference!
+            #label.place(x=20, y=300)
+
+
+            u = urllib.request.urlopen(ProductImg.text)
+            raw_data = u.read()
+            u.close()
+
+            im = Image.open(BytesIO(raw_data))
+            photo = ImageTk.PhotoImage(im)
+
+            label = tk.Label(image=photo)
+            label.image = photo
+            label.pack()
+            label.place(x=100, y = 200)
+
 
         print()
         ProductIndex += 1
+        return strOut
 
         #print("  " + tripPlaceTitle.text + "  번호 : " + tripPlaceTel + "   주소 : " + tripPlaceAddress)
 

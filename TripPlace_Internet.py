@@ -90,6 +90,7 @@ def extractTripPlaceData(strXml):
     #print(strXml)
     # TripPlaceData(Book) 엘리먼트를 가져옵니다.
     tripPlaceIndex = 1
+    strOut = ""
     ####################성공한코?ㅋㅋㅋㅋㅋㅋㅋㅋㅋ 왕좋고요!!!!
     for item in tree.iter("item"):
         tripPlaceTitle = item.find("title")
@@ -97,15 +98,26 @@ def extractTripPlaceData(strXml):
         tripPlaceTel = item.find("tel")
         print(tripPlaceIndex)
         print(tripPlaceTitle.text)
+
+        strOut += """
+        """
+        strOut += "%d" % tripPlaceIndex + """
+        """
+        strOut += "  병원 이름 : " + tripPlaceTitle.text + """
+        """
         if tripPlaceAddress != None:
             print(tripPlaceAddress.text)
+            strOut += "  주소 : " + tripPlaceAddress.text + """
+            """
         if tripPlaceTel != None:
             print(tripPlaceTel.text)
+            strOut += "  번호 : " + tripPlaceTel.text + """
+            """
         print()
+
         tripPlaceIndex += 1
-
         #print("  " + tripPlaceTitle.text + "  번호 : " + tripPlaceTel + "   주소 : " + tripPlaceAddress)
-
+    return strOut
     #####################
     #itemElements = tree.getiterator("item")  # return list type
     #print(itemElements)
