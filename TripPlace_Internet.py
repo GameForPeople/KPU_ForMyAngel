@@ -103,7 +103,7 @@ def extractTripPlaceData(strXml):
         """
         strOut += "%d" % tripPlaceIndex + """
         """
-        strOut += "  병원 이름 : " + tripPlaceTitle.text + """
+        strOut += "  [ " + tripPlaceTitle.text + " ]" + """
         """
         if tripPlaceAddress != None:
             print(tripPlaceAddress.text)
@@ -111,9 +111,12 @@ def extractTripPlaceData(strXml):
             """
         if tripPlaceTel != None:
             print(tripPlaceTel.text)
-            strOut += "  번호 : " + tripPlaceTel.text + """
+            strOut += "번호 : " + tripPlaceTel.text + """
             """
+
         print()
+        strOut += """
+        """
 
         tripPlaceIndex += 1
         #print("  " + tripPlaceTitle.text + "  번호 : " + tripPlaceTel + "   주소 : " + tripPlaceAddress)

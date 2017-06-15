@@ -71,9 +71,14 @@ def getProductData(g_Tk, question, page):
         return None
 
 
+def DestoryItemLabel():
+    itemLabel.destroy()
+
 #끄집어 내는 곳
 def extractProductData(g_Tk, strXml):
     from xml.etree import ElementTree
+    global itemLabel
+
     tree = ElementTree.fromstring(strXml)
     #print(strXml)
     # ProductData(Book) 엘리먼트를 가져옵니다.
@@ -93,7 +98,7 @@ def extractProductData(g_Tk, strXml):
 
         strOut += """
         """
-        strOut += "%d" % ProductIndex + """
+        strOut += """
         """
 
         if ProductBrand != None:
@@ -106,12 +111,12 @@ def extractProductData(g_Tk, strXml):
 
         strOut += "제품 이름 : " + ProductTitle.text + """
         """
-        strOut += "제품 분류 : " + ProductTitle.text + """
+        strOut += "제품 분류 : " + ProductCategory.text + """
         """
 
         if ProductPrice != None:
             print(ProductPrice.text)
-            strOut += "제품 가격 : " + ProductTitle.text + """
+            strOut += "제품 가격 : " + ProductPrice.text + """
             """
 
         if ProductImg != None:
@@ -133,10 +138,10 @@ def extractProductData(g_Tk, strXml):
             im = Image.open(BytesIO(raw_data))
             photo = ImageTk.PhotoImage(im)
 
-            label = tk.Label(image=photo)
-            label.image = photo
-            label.pack()
-            label.place(x=100, y = 200)
+            itemLabel = tk.Label(image=photo)
+            itemLabel.image = photo
+            itemLabel.pack()
+            itemLabel.place(x=170, y = 530)
 
 
         print()

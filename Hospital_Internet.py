@@ -89,13 +89,14 @@ def extractHospitalData(strXml):
         print()
 
         strOut += """
-                    """
+        """
         strOut += "%d" % HospitalIndex + """
-                    """
+        """
         strOut += "  병원 이름 : " + HospitalTitle.text + """
-                    """ + "  주소 : " + HospitalAddress.text + """
-                    """ + "  번호 : " + HospitalTel.text + """
-                    """
+        """ + "  주소 : " + HospitalAddress.text + """
+        """ + "  번호 : " + HospitalTel.text + """
+        """ + """
+        """
 
         HospitalIndex += 1
 

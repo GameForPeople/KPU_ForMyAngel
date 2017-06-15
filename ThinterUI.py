@@ -6,16 +6,23 @@ from Weather_internet import *
 from TripPlace_Internet import *
 from Hospital_Internet import *
 from Product_Internet import *
+from Mail_Function import *
 
 import datetime
+
+import playsound
+import winsound
+
 import tkinter.messagebox
 g_Tk = Tk()
 #g_Tk.geometry("400x600+750+200")
-g_Tk.geometry("480x800+700+100")
-
+g_Tk.geometry("480x800+600+5")
+g_Tk.title("""For My Angel  //게임공학과13학번원성연""")
 DataList = []
 
+BigButtonFont = font.Font(g_Tk, size=60, weight='bold', family='Consolas') #정식 버튼 글씨체
 ButtonFont = font.Font(g_Tk, size=30, weight='bold', family='Consolas') #정식 버튼 글씨체
+LittleLittleButtonFont = font.Font(g_Tk, size=11, weight='bold', family='Consolas') #정식 버튼 글씨체
 LittleButtonFont = font.Font(g_Tk, size=16, weight='bold', family='Consolas') #정식 버튼 글씨체
 
 photo_0 = PhotoImage(file="loadImg_0.png")  # 디폴트 이미지 파일
@@ -35,12 +42,16 @@ isAni = False
 INSERT_BUFFER = 0
 
 ENTRY_BUFFER = Entry(g_Tk)
+
 YES_BUTTON_BUFFER = Button(g_Tk)
 NO_BUTTON_BUFFER = Button(g_Tk)
 INSERT_BUTTON_BUFFER = Button(g_Tk)
+MAIL_BUTTON_BUFFER = Button(g_Tk)
+
 SCROLL_BAR = Scrollbar(g_Tk)
 RENDER_TEXT = Text(g_Tk)
 LABEL_BUFFER = Label(g_Tk)
+MAIN_LABEL_BUFFER = Label(g_Tk)
 
 imageLabel = Label(g_Tk, image=photo_0)
 imageLabel.pack()
@@ -50,13 +61,50 @@ lab.pack()
 
 Page = 0
 
+isItemImg = False
+isMail = False
+strOut = ""
 
-def InsertBookInfo():
-    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+
+def StartMail():
+    global strOut
+    SendEmail2(g_Tk, strOut)
+
+def DeleteInfo():
+    global YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, INSERT_BUTTON_BUFFER, isMail, \
+        MAIL_BUTTON_BUFFER, isItemImg, Page, MAIN_LABEL_BUFFER
+
+    Page = 0
 
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
 
+    SCROLL_BAR.destroy()
+    RENDER_TEXT.destroy()
+
+    ENTRY_BUFFER.destroy()
+    LABEL_BUFFER.destroy()
+    INSERT_BUTTON_BUFFER.destroy()
+
+    MAIN_LABEL_BUFFER.destroy()
+
+    if isMail == True:
+        MAIL_BUTTON_BUFFER.destroy()
+        isMail = False
+
+    if isItemImg == True:
+        DestoryItemLabel()
+        isItemImg = False
+
+    InitMenu()
+
+def InsertBookInfo():
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, strOut, MAIN_LABEL_BUFFER
+
+    YES_BUTTON_BUFFER.destroy()
+    NO_BUTTON_BUFFER.destroy()
+
+    MAIN_LABEL_BUFFER.destroy()
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
 
@@ -68,7 +116,6 @@ def InsertBookInfo():
         print("모든 결과를 열람하셨습니다. ")
         Page = 0
         DeleteInfo()
-        InitMenu()
         return
 
     else:
@@ -81,18 +128,23 @@ def InsertBookInfo():
         SCROLL_BAR.pack()
         SCROLL_BAR.place(x=470, y=200)
         TempFont = font.Font(g_Tk, size=10, family='Consolas')
-        RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
+        RENDER_TEXT = Text(g_Tk, width=60, height=41, borderwidth=12, relief='ridge',
                           yscrollcommand=SCROLL_BAR.set)
         RENDER_TEXT.pack()
-        RENDER_TEXT.place(x=16, y=180)
+        RENDER_TEXT.place(x=16, y=165)
         SCROLL_BAR.config(command=RENDER_TEXT.yview)
         SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
         RENDER_TEXT.configure(state='normal')
         RENDER_TEXT.insert(INSERT, strOut)
+        RENDER_TEXT["fg"] = "gray"
 
         #F = lambda bookBuffer, value : bookBuffer + value
 
         YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertBookInfo)
+
+        if Page == 3:
+            YES_BUTTON_BUFFER.configure(state="disabled")
+
         YES_BUTTON_BUFFER.pack()
         YES_BUTTON_BUFFER.place(x=320, y=730)
         YES_BUTTON_BUFFER["bg"] = "white"
@@ -104,45 +156,46 @@ def InsertBookInfo():
         NO_BUTTON_BUFFER["bg"] = "white"
         NO_BUTTON_BUFFER["fg"] = "pink"
 
-def DeleteInfo():
-    global YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, INSERT_BUTTON_BUFFER
-
-    YES_BUTTON_BUFFER.destroy()
-    NO_BUTTON_BUFFER.destroy()
-
-    SCROLL_BAR.destroy()
-    RENDER_TEXT.destroy()
-
-    ENTRY_BUFFER.destroy()
-    LABEL_BUFFER.destroy()
-    INSERT_BUTTON_BUFFER.destroy()
-
-    InitMenu()
+        MAIN_LABEL_BUFFER = Label(g_Tk, font=BigButtonFont , text="Book")
+        MAIN_LABEL_BUFFER.pack()
+        MAIN_LABEL_BUFFER.place(x=30, y=45)
+        MAIN_LABEL_BUFFER["fg"] = "white"
+        MAIN_LABEL_BUFFER["bg"] = "pink"
 
 def FunctionBook():
     global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
 
+    winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
+
     DestoryMenu()
 
-    LABEL_BUFFER = Label(g_Tk, text="책과 관련된 정보를 입력해주세요 : ")
-    LABEL_BUFFER.place(x=50, y=200)
+    LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About Book!")
+    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER["bg"] = "gray"
+    LABEL_BUFFER["fg"] = "White"
 
-    ENTRY_BUFFER = Entry(g_Tk)
+    ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=200, y=200)
+    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER["fg"] = "gray"
 
-    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command = InsertBookInfo)
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertBookInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER["bg"] = "white"
+    INSERT_BUTTON_BUFFER["fg"] = "pink"
 
 def InsertHospInfo():
-    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, strOut, MAIN_LABEL_BUFFER
 
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
 
+    MAIN_LABEL_BUFFER.destroy()
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
+
+    small_LABEL_BUFFER.destroy()
 
     Page += 1
 
@@ -151,7 +204,6 @@ def InsertHospInfo():
         print("모든 결과를 열람하셨습니다. ")
         Page = 0
         DeleteInfo()
-        InitMenu()
         return
 
     else:
@@ -167,15 +219,20 @@ def InsertHospInfo():
         RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
                           yscrollcommand=SCROLL_BAR.set)
         RENDER_TEXT.pack()
-        RENDER_TEXT.place(x=16, y=180)
+        RENDER_TEXT.place(x=16, y=165)
         SCROLL_BAR.config(command=RENDER_TEXT.yview)
         SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
         RENDER_TEXT.configure(state='normal')
         RENDER_TEXT.insert(INSERT, strOut)
+        RENDER_TEXT["fg"] = "gray"
 
         #F = lambda bookBuffer, value : bookBuffer + value
 
         YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertHospInfo)
+
+        if Page == 3:
+            YES_BUTTON_BUFFER.configure(state="disabled")
+
         YES_BUTTON_BUFFER.pack()
         YES_BUTTON_BUFFER.place(x=320, y=730)
         YES_BUTTON_BUFFER["bg"] = "white"
@@ -187,30 +244,55 @@ def InsertHospInfo():
         NO_BUTTON_BUFFER["bg"] = "white"
         NO_BUTTON_BUFFER["fg"] = "pink"
 
+        MAIN_LABEL_BUFFER = Label(g_Tk, font=BigButtonFont, text="Hosp")
+        MAIN_LABEL_BUFFER.pack()
+        MAIN_LABEL_BUFFER.place(x=30, y=45)
+        MAIN_LABEL_BUFFER["fg"] = "white"
+        MAIN_LABEL_BUFFER["bg"] = "pink"
+
 def FunctionHosp():
-    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER, small_LABEL_BUFFER
+
+    winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
 
     DestoryMenu()
 
-    LABEL_BUFFER = Label(g_Tk, text="원하는 읍,면,동을 입력해주세요 : ")
-    LABEL_BUFFER.place(x=50, y=200)
+    LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About HOSP!")
+    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER["bg"] = "gray"
+    LABEL_BUFFER["fg"] = "White"
 
-    ENTRY_BUFFER = Entry(g_Tk)
+    small_LABEL_BUFFER = Label(g_Tk, font=LittleLittleButtonFont , text="읍, 면, 동을 입력하세요")
+    small_LABEL_BUFFER.place(x=150, y=350)
+    small_LABEL_BUFFER["bg"] = "pink"
+    small_LABEL_BUFFER["fg"] = "white"
+
+    ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=200, y=200)
+    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER["fg"] = "gray"
 
-    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertHospInfo)
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertHospInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER["bg"] = "white"
+    INSERT_BUTTON_BUFFER["fg"] = "pink"
 
 def InsertItemInfo():
-    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+    global INSERT_BUFFER, Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, strOut, isMail, \
+        MAIL_BUTTON_BUFFER, isItemImg
 
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
+    MAIL_BUTTON_BUFFER.destroy()
+
+    MAIN_LABEL_BUFFER.destroy()
 
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
+
+    small_LABEL_BUFFER.destroy()
+    LABEL_BUFFER.destroy()
 
     Page += 1
 
@@ -219,7 +301,6 @@ def InsertItemInfo():
         print("모든 결과를 열람하셨습니다. ")
         Page = 0
         DeleteInfo()
-        InitMenu()
         return
 
     else:
@@ -232,10 +313,10 @@ def InsertItemInfo():
         SCROLL_BAR.pack()
         SCROLL_BAR.place(x=470, y=200)
         TempFont = font.Font(g_Tk, size=10, family='Consolas')
-        RENDER_TEXT = Text(g_Tk, width=60, height=20, borderwidth=12, relief='ridge',
+        RENDER_TEXT = Text(g_Tk, width=60, height=10, borderwidth=12, relief='ridge',
                           yscrollcommand=SCROLL_BAR.set)
         RENDER_TEXT.pack()
-        RENDER_TEXT.place(x=16, y=400)
+        RENDER_TEXT.place(x=16, y=370)
         SCROLL_BAR.config(command=RENDER_TEXT.yview)
         SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
         RENDER_TEXT.configure(state='normal')
@@ -244,42 +325,72 @@ def InsertItemInfo():
 
         #F = lambda bookBuffer, value : bookBuffer + value
 
-        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertItemInfo)
+        YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next!", command=InsertItemInfo)
+
+        if Page == 3:
+            YES_BUTTON_BUFFER.configure(state="disabled")
+
         YES_BUTTON_BUFFER.pack()
-        YES_BUTTON_BUFFER.place(x=320, y=730)
+        YES_BUTTON_BUFFER.place(x=340, y=730)
         YES_BUTTON_BUFFER["bg"] = "white"
         YES_BUTTON_BUFFER["fg"] = "pink"
 
-        NO_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="   Quit   ", command=DeleteInfo)
+
+        NO_BUTTON_BUFFER = Button(g_Tk,font=LittleButtonFont,text="Quit!",command=DeleteInfo)
         NO_BUTTON_BUFFER.pack()
         NO_BUTTON_BUFFER.place(x=20, y=730)
         NO_BUTTON_BUFFER["bg"] = "white"
         NO_BUTTON_BUFFER["fg"] = "pink"
 
+        isItemImg = True
+
+        isMail = True
+        MAIL_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="MAIL!", command=StartMail)
+        MAIL_BUTTON_BUFFER.pack()
+        MAIL_BUTTON_BUFFER.place(x=220, y=730)
+        MAIL_BUTTON_BUFFER["bg"] = "white"
+        MAIL_BUTTON_BUFFER["fg"] = "pink"
+
 def FunctionItem():
-    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER, small_LABEL_BUFFER
+
+    winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
 
     DestoryMenu()
 
-    LABEL_BUFFER = Label(g_Tk, text="원하는 상품종류를 입력해주세요 : ")
-    LABEL_BUFFER.place(x=50, y=400)
+    LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About ITEM!")
+    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER["bg"] = "gray"
+    LABEL_BUFFER["fg"] = "White"
 
-    ENTRY_BUFFER = Entry(g_Tk)
+    small_LABEL_BUFFER = Label(g_Tk, font=LittleLittleButtonFont , text="원하는 품목을 입력하세요")
+    small_LABEL_BUFFER.place(x=143, y=350)
+    small_LABEL_BUFFER["bg"] = "pink"
+    small_LABEL_BUFFER["fg"] = "white"
+
+    ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=200, y=400)
+    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER["fg"] = "gray"
 
-    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertItemInfo)
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertItemInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER["bg"] = "white"
+    INSERT_BUTTON_BUFFER["fg"] = "pink"
 
 def InsertTripInfo():
-    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT
+    global INSERT_BUFFER,Page, YES_BUTTON_BUFFER, NO_BUTTON_BUFFER, SCROLL_BAR, RENDER_TEXT, MAIL_BUTTON_BUFFER, strOut, \
+        MAIN_LABEL_BUFFER
 
     YES_BUTTON_BUFFER.destroy()
     NO_BUTTON_BUFFER.destroy()
 
     SCROLL_BAR.destroy()
     RENDER_TEXT.destroy()
+
+    MAIN_LABEL_BUFFER.destroy()
+    small_LABEL_BUFFER.destroy()
 
     Page += 1
 
@@ -288,7 +399,6 @@ def InsertTripInfo():
         print("모든 결과를 열람하셨습니다. ")
         Page = 0
         DeleteInfo()
-        InitMenu()
         return
 
     else:
@@ -301,18 +411,23 @@ def InsertTripInfo():
         SCROLL_BAR.pack()
         SCROLL_BAR.place(x=470, y=200)
         TempFont = font.Font(g_Tk, size=10, family='Consolas')
-        RENDER_TEXT = Text(g_Tk, width=60, height=20, borderwidth=12, relief='ridge',
+        RENDER_TEXT = Text(g_Tk, width=60, height=40, borderwidth=12, relief='ridge',
                           yscrollcommand=SCROLL_BAR.set)
         RENDER_TEXT.pack()
-        RENDER_TEXT.place(x=16, y=400)
+        RENDER_TEXT.place(x=16, y=165)
         SCROLL_BAR.config(command=RENDER_TEXT.yview)
         SCROLL_BAR.pack(side=RIGHT, fill=BOTH)
         RENDER_TEXT.configure(state='normal')
         RENDER_TEXT.insert(INSERT, strOut)
+        RENDER_TEXT["fg"] = "gray"
 
         #F = lambda bookBuffer, value : bookBuffer + value
 
         YES_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="Next Page!", command=InsertTripInfo)
+
+        if Page == 3:
+            YES_BUTTON_BUFFER.configure(state="disabled")
+
         YES_BUTTON_BUFFER.pack()
         YES_BUTTON_BUFFER.place(x=320, y=730)
         YES_BUTTON_BUFFER["bg"] = "white"
@@ -324,21 +439,41 @@ def InsertTripInfo():
         NO_BUTTON_BUFFER["bg"] = "white"
         NO_BUTTON_BUFFER["fg"] = "pink"
 
+        MAIN_LABEL_BUFFER = Label(g_Tk, font=BigButtonFont, text="TOUR:")
+        MAIN_LABEL_BUFFER.pack()
+        MAIN_LABEL_BUFFER.place(x=30, y=45)
+        MAIN_LABEL_BUFFER["fg"] = "white"
+        MAIN_LABEL_BUFFER["bg"] = "pink"
+
 def FunctionTrip():
-    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER
+    global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER, small_LABEL_BUFFER
+
+    winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
 
     DestoryMenu()
 
-    LABEL_BUFFER = Label(g_Tk, text="원하는 지역을 입력해주세요 1 서울 2 인천 3 대전 4 대구 5광주 6 부산 7 울산 8 세종 : ")
-    LABEL_BUFFER.place(x=50, y=400)
+    #LABEL_BUFFER = Label(g_Tk, text="원하는 지역을 입력해주세요 1 서울 2 인천 3 대전 4 대구 5광주 6 부산 7 울산 8 세종 : ")
 
-    ENTRY_BUFFER = Entry(g_Tk)
+    LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About Trip!")
+    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER["bg"] = "gray"
+    LABEL_BUFFER["fg"] = "White"
+
+    small_LABEL_BUFFER = Label(g_Tk, font=LittleLittleButtonFont , text="1서울 2인천 3대전 4대구 5광주 6부산 7울산 8세종")
+    small_LABEL_BUFFER.place(x=60, y=350)
+    small_LABEL_BUFFER["bg"] = "pink"
+    small_LABEL_BUFFER["fg"] = "white"
+
+    ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=50, y=500)
+    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER["fg"] = "gray"
 
-    INSERT_BUTTON_BUFFER = Button(g_Tk, font=ButtonFont, text="검색", command=InsertTripInfo)
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertTripInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=200, y=500)
+    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER["bg"] = "white"
+    INSERT_BUTTON_BUFFER["fg"] = "pink"
 
 bookButton = Button(g_Tk)
 hospitalButton = Button(g_Tk)
@@ -348,34 +483,33 @@ tripplaceButton = Button(g_Tk)
 def InitMenu():
     global g_Tk, imageLabel, ButtonFont, bookButton, hospitalButton, productButton, tripplaceButton
 
-    simpleX = 480 / 2
-    simpleY = 800 / 2
+    simpleX = 480 / 2 - 25
+    simpleY = 500 - 5
 
-    bookButton = Button(g_Tk, font=ButtonFont, text=    " BOOK ", command=FunctionBook)
-    hospitalButton = Button(g_Tk, font=ButtonFont, text=" HOSP ", command=FunctionHosp)
-    productButton = Button(g_Tk, font=ButtonFont, text= " ITEM ", command=FunctionItem)
-    tripplaceButton = Button(g_Tk, font=ButtonFont,text=" TOUR ", command=FunctionTrip)
+    bookButton = Button(g_Tk, font=ButtonFont, text=    "  BOOK  ", command=FunctionBook)
+    hospitalButton = Button(g_Tk, font=ButtonFont, text="  HOSP  ", command=FunctionHosp)
+    productButton = Button(g_Tk, font=ButtonFont, text= "  ITEM  ", command=FunctionItem)
+    tripplaceButton = Button(g_Tk, font=ButtonFont,text="  TOUR  ", command=FunctionTrip)
 
     bookButton.pack()
-    bookButton.place(x=simpleX - 200, y= simpleY + 100)
+    bookButton.place(x=simpleX - 188, y= simpleY + 110)
     bookButton["bg"] = "white"
     bookButton["fg"] = "pink"
 
     hospitalButton.pack()
-    hospitalButton.place(x=simpleX + 40, y= simpleY + 100)
+    hospitalButton.place(x=simpleX + 28 , y= simpleY + 110)
     hospitalButton["bg"] = "white"
     hospitalButton["fg"] = "pink"
 
     productButton.pack()
-    productButton.place(x=simpleX - 200, y= simpleY + 250)
+    productButton.place(x=simpleX - 188, y= simpleY + 200)
     productButton["bg"] = "white"
     productButton["fg"] = "pink"
 
     tripplaceButton.pack()
-    tripplaceButton.place(x=simpleX + 40, y= simpleY + 250)
+    tripplaceButton.place(x=simpleX + 28, y= simpleY + 200)
     tripplaceButton["bg"] = "white"
     tripplaceButton["fg"] = "pink"
-
 
 def DestoryMenu():
     global ButtonFont, bookButton, hospitalButton, productButton, tripplaceButton
