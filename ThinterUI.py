@@ -96,8 +96,7 @@ WEATHER_IMG_2 = PhotoImage(file="Weather_2.png")
 WEATHER_IMG_3 = PhotoImage(file="Weather_2.png")
 WEATHER_IMG_4 = PhotoImage(file="Weather_4.png")
 
-WEATHER_LABEL_BUFFER = Label(g_Tk, image = WEATHER_IMG_1)
-#WEATHER_LABEL_BUFFER = Label(g_Tk, image = PhotoImage(file="buffer.png"))
+WEATHER_LABEL_BUFFER = Label(g_Tk, image = PhotoImage(file="buffer.png"))
 WEATHER_LABEL_BUFFER.pack()
 
 WEATHER_VALUE = getWeatherData()
@@ -216,18 +215,18 @@ def FunctionBook():
     DestoryMenu()
 
     LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About Book!")
-    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER.place(x=120, y=410)
     LABEL_BUFFER["bg"] = "gray"
     LABEL_BUFFER["fg"] = "White"
 
     ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER.place(x=120, y=480)
     ENTRY_BUFFER["fg"] = "gray"
 
     INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertBookInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER.place(x=380, y=478)
     INSERT_BUTTON_BUFFER["bg"] = "white"
     INSERT_BUTTON_BUFFER["fg"] = "pink"
 
@@ -304,23 +303,23 @@ def FunctionHosp():
     DestoryMenu()
 
     LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About HOSP!")
-    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER.place(x=120, y=410)
     LABEL_BUFFER["bg"] = "gray"
     LABEL_BUFFER["fg"] = "White"
 
     small_LABEL_BUFFER = Label(g_Tk, font=LittleLittleButtonFont , text="읍, 면, 동을 입력하세요")
-    small_LABEL_BUFFER.place(x=150, y=350)
+    small_LABEL_BUFFER.place(x=150, y=520)
     small_LABEL_BUFFER["bg"] = "pink"
     small_LABEL_BUFFER["fg"] = "white"
 
     ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER.place(x=120, y=480)
     ENTRY_BUFFER["fg"] = "gray"
 
     INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertHospInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER.place(x=380, y=478)
     INSERT_BUTTON_BUFFER["bg"] = "white"
     INSERT_BUTTON_BUFFER["fg"] = "pink"
 
@@ -393,9 +392,17 @@ def InsertItemInfo():
         isMail = True
         MAIL_BUTTON_BUFFER = Button(g_Tk,  font=LittleButtonFont, text="MAIL!", command=StartMail)
         MAIL_BUTTON_BUFFER.pack()
-        MAIL_BUTTON_BUFFER.place(x=220, y=730)
+        MAIL_BUTTON_BUFFER.place(x=205, y=730)
         MAIL_BUTTON_BUFFER["bg"] = "white"
         MAIL_BUTTON_BUFFER["fg"] = "pink"
+
+def fakeInsertItemInfo():
+    global Page
+    if Page > 0:
+        DestoryItemLabel()
+
+    Page = 0
+    InsertItemInfo()
 
 def FunctionItem():
     global INSERT_BUFFER, ENTRY_BUFFER, LABEL_BUFFER, INSERT_BUTTON_BUFFER, small_LABEL_BUFFER
@@ -405,7 +412,7 @@ def FunctionItem():
     DestoryMenu()
 
     LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About ITEM!")
-    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER.place(x=120, y=260)
     LABEL_BUFFER["bg"] = "gray"
     LABEL_BUFFER["fg"] = "White"
 
@@ -419,7 +426,7 @@ def FunctionItem():
     ENTRY_BUFFER.place(x=120, y=320)
     ENTRY_BUFFER["fg"] = "gray"
 
-    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertItemInfo)
+    INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = fakeInsertItemInfo)
     INSERT_BUTTON_BUFFER.pack()
     INSERT_BUTTON_BUFFER.place(x=380, y=318)
     INSERT_BUTTON_BUFFER["bg"] = "white"
@@ -501,23 +508,23 @@ def FunctionTrip():
     #LABEL_BUFFER = Label(g_Tk, text="원하는 지역을 입력해주세요 1 서울 2 인천 3 대전 4 대구 5광주 6 부산 7 울산 8 세종 : ")
 
     LABEL_BUFFER = Label(g_Tk, font=ButtonFont , text="About Trip!")
-    LABEL_BUFFER.place(x=120, y=240)
+    LABEL_BUFFER.place(x=120, y=410)
     LABEL_BUFFER["bg"] = "gray"
     LABEL_BUFFER["fg"] = "White"
 
     small_LABEL_BUFFER = Label(g_Tk, font=LittleLittleButtonFont , text="1서울 2인천 3대전 4대구 5광주 6부산 7울산 8세종")
-    small_LABEL_BUFFER.place(x=60, y=350)
+    small_LABEL_BUFFER.place(x=60, y=520)
     small_LABEL_BUFFER["bg"] = "pink"
     small_LABEL_BUFFER["fg"] = "white"
 
     ENTRY_BUFFER = Entry(g_Tk , font=LittleButtonFont )
     ENTRY_BUFFER.pack()
-    ENTRY_BUFFER.place(x=120, y=320)
+    ENTRY_BUFFER.place(x=120, y=480)
     ENTRY_BUFFER["fg"] = "gray"
 
     INSERT_BUTTON_BUFFER = Button(g_Tk, font=LittleLittleButtonFont, text="검색", command = InsertTripInfo)
     INSERT_BUTTON_BUFFER.pack()
-    INSERT_BUTTON_BUFFER.place(x=380, y=318)
+    INSERT_BUTTON_BUFFER.place(x=380, y=478)
     INSERT_BUTTON_BUFFER["bg"] = "white"
     INSERT_BUTTON_BUFFER["fg"] = "pink"
 
@@ -568,12 +575,13 @@ def changeImg():
     global iLoad, imageLabel, isAni, WEATHER_LABEL_BUFFER, WEATHER_VALUE
     isAni = True
     # while iLoad < 6:
+    if iLoad == 0:
+        winsound.PlaySound('effect_2.wav', winsound.SND_FILENAME)
     iLoad += 1
     #print(iLoad)
     #
     if iLoad == 1:
         imgbutton.destroy()
-        winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
         imageLabel.configure(image=photo_1)
         imageLabel.image = photo_1
     elif iLoad == 2:
@@ -679,6 +687,7 @@ def changeImg():
 
         WEATHER_LABEL_BUFFER.place(x=361, y=14)
 
+
     elif iLoad == 30:
         imageLabel.configure(image=photo_30)
         imageLabel.image = photo_30
@@ -724,6 +733,7 @@ def changeImg():
     elif iLoad == 44:
         imageLabel.configure(image=photo_44)
         imageLabel.image = photo_44
+
 
 def StartAnimation():
     global g_Tk, imageLabel, imgbutton, WEATHER_VALUE

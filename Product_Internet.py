@@ -141,7 +141,7 @@ def extractProductData(g_Tk, strXml):
             itemLabel = tk.Label(image=photo)
             itemLabel.image = photo
             itemLabel.pack()
-            itemLabel.place(x=170, y = 530)
+            itemLabel.place(x=170, y = 540)
 
 
         print()
