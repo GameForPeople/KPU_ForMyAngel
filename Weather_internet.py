@@ -99,6 +99,7 @@ def extractWheatherData(strXml):
         print()
 
 
+    return weatherValue.text
     #####################
     #itemElements = tree.getiterator("item")  # return list type
     #print(itemElements)

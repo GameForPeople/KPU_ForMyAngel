@@ -35,6 +35,41 @@ photo_6 = PhotoImage(file="loadImg_6.png")  # 디폴트 이미지 파일
 photo_7 = PhotoImage(file="loadImg_7.png")  # 디폴트 이미지 파일
 photo_8 = PhotoImage(file="loadImg_8.png")  # 디폴트 이미지 파일
 photo_9 = PhotoImage(file="loadImg_9.png")  # 디폴트 이미지 파일
+photo_10 = PhotoImage(file="loadImg_10.png")  # 디폴트 이미지 파일
+photo_11 = PhotoImage(file="loadImg_11.png")  # 디폴트 이미지 파일
+photo_12 = PhotoImage(file="loadImg_12.png")  # 디폴트 이미지 파일
+photo_13 = PhotoImage(file="loadImg_13.png")  # 디폴트 이미지 파일
+photo_14 = PhotoImage(file="loadImg_14.png")  # 디폴트 이미지 파일
+photo_15 = PhotoImage(file="loadImg_15.png")  # 디폴트 이미지 파일
+photo_16 = PhotoImage(file="loadImg_16.png")  # 디폴트 이미지 파일
+photo_17 = PhotoImage(file="loadImg_17.png")  # 디폴트 이미지 파일
+photo_18 = PhotoImage(file="loadImg_18.png")  # 디폴트 이미지 파일
+photo_19 = PhotoImage(file="loadImg_19.png")  # 디폴트 이미지 파일
+photo_20 = PhotoImage(file="loadImg_20.png")  # 디폴트 이미지 파일
+photo_21 = PhotoImage(file="loadImg_21.png")  # 디폴트 이미지 파일
+photo_22 = PhotoImage(file="loadImg_22.png")  # 디폴트 이미지 파일
+photo_23 = PhotoImage(file="loadImg_23.png")  # 디폴트 이미지 파일
+photo_24 = PhotoImage(file="loadImg_24.png")  # 디폴트 이미지 파일
+photo_25 = PhotoImage(file="loadImg_25.png")  # 디폴트 이미지 파일
+photo_26 = PhotoImage(file="loadImg_26.png")  # 디폴트 이미지 파일
+photo_27 = PhotoImage(file="loadImg_27.png")  # 디폴트 이미지 파일
+photo_28 = PhotoImage(file="loadImg_28.png")  # 디폴트 이미지 파일
+photo_29 = PhotoImage(file="loadImg_29.png")  # 디폴트 이미지 파일
+photo_30 = PhotoImage(file="loadImg_30.png")  # 디폴트 이미지 파일
+photo_31 = PhotoImage(file="loadImg_31.png")  # 디폴트 이미지 파일
+photo_32 = PhotoImage(file="loadImg_32.png")  # 디폴트 이미지 파일
+photo_33 = PhotoImage(file="loadImg_33.png")  # 디폴트 이미지 파일
+photo_34 = PhotoImage(file="loadImg_34.png")  # 디폴트 이미지 파일
+photo_35 = PhotoImage(file="loadImg_35.png")  # 디폴트 이미지 파일
+photo_36 = PhotoImage(file="loadImg_36.png")  # 디폴트 이미지 파일
+photo_37 = PhotoImage(file="loadImg_37.png")  # 디폴트 이미지 파일
+photo_38 = PhotoImage(file="loadImg_38.png")  # 디폴트 이미지 파일
+photo_39 = PhotoImage(file="loadImg_39.png")  # 디폴트 이미지 파일
+photo_40 = PhotoImage(file="loadImg_40.png")  # 디폴트 이미지 파일
+photo_41 = PhotoImage(file="loadImg_41.png")  # 디폴트 이미지 파일
+photo_42 = PhotoImage(file="loadImg_42.png")  # 디폴트 이미지 파일
+photo_43 = PhotoImage(file="loadImg_43.png")  # 디폴트 이미지 파일
+photo_44 = PhotoImage(file="loadImg_44.png")  # 디폴트 이미지 파일
 
 iLoad = 0
 isAni = False
@@ -55,6 +90,17 @@ MAIN_LABEL_BUFFER = Label(g_Tk)
 
 imageLabel = Label(g_Tk, image=photo_0)
 imageLabel.pack()
+
+WEATHER_IMG_1 = PhotoImage(file="Weather_1.png")
+WEATHER_IMG_2 = PhotoImage(file="Weather_2.png")
+WEATHER_IMG_3 = PhotoImage(file="Weather_2.png")
+WEATHER_IMG_4 = PhotoImage(file="Weather_4.png")
+
+WEATHER_LABEL_BUFFER = Label(g_Tk, image = WEATHER_IMG_1)
+#WEATHER_LABEL_BUFFER = Label(g_Tk, image = PhotoImage(file="buffer.png"))
+WEATHER_LABEL_BUFFER.pack()
+
+WEATHER_VALUE = getWeatherData()
 
 lab = Label(g_Tk)       #clock
 lab.pack()
@@ -519,13 +565,15 @@ def DestoryMenu():
     tripplaceButton.destroy()
 
 def changeImg():
-    global iLoad, imageLabel, isAni
+    global iLoad, imageLabel, isAni, WEATHER_LABEL_BUFFER, WEATHER_VALUE
     isAni = True
     # while iLoad < 6:
     iLoad += 1
-    print(iLoad)
+    #print(iLoad)
     #
     if iLoad == 1:
+        imgbutton.destroy()
+        winsound.PlaySound('effect_1.wav', winsound.SND_FILENAME)
         imageLabel.configure(image=photo_1)
         imageLabel.image = photo_1
     elif iLoad == 2:
@@ -552,13 +600,140 @@ def changeImg():
     elif iLoad == 9:
         imageLabel.configure(image=photo_9)
         imageLabel.image = photo_9
+    elif iLoad == 10:
+        imageLabel.configure(image=photo_10)
+        imageLabel.image = photo_10
+    elif iLoad == 11:
+        imageLabel.configure(image=photo_11)
+        imageLabel.image = photo_11
+    elif iLoad == 12:
+        imageLabel.configure(image=photo_12)
+        imageLabel.image = photo_12
+    elif iLoad == 13:
+        imageLabel.configure(image=photo_13)
+        imageLabel.image = photo_13
+    elif iLoad == 14:
+        imageLabel.configure(image=photo_14)
+        imageLabel.image = photo_14
+    elif iLoad == 15:
+        imageLabel.configure(image=photo_15)
+        imageLabel.image = photo_15
+    elif iLoad == 16:
+        imageLabel.configure(image=photo_16)
+        imageLabel.image = photo_16
+    elif iLoad == 17:
+        imageLabel.configure(image=photo_17)
+        imageLabel.image = photo_17
+    elif iLoad == 18:
+        imageLabel.configure(image=photo_18)
+        imageLabel.image = photo_18
+    elif iLoad == 19:
+        imageLabel.configure(image=photo_19)
+        imageLabel.image = photo_19
+    elif iLoad == 20:
+        imageLabel.configure(image=photo_20)
+        imageLabel.image = photo_20
+    elif iLoad == 21:
+        imageLabel.configure(image=photo_21)
+        imageLabel.image = photo_21
+    elif iLoad == 22:
+        imageLabel.configure(image=photo_22)
+        imageLabel.image = photo_22
+    elif iLoad == 23:
+        imageLabel.configure(image=photo_23)
+        imageLabel.image = photo_23
+    elif iLoad == 24:
+        imageLabel.configure(image=photo_24)
+        imageLabel.image = photo_24
+    elif iLoad == 25:
+        imageLabel.configure(image=photo_25)
+        imageLabel.image = photo_25
+    elif iLoad == 26:
+        imageLabel.configure(image=photo_26)
+        imageLabel.image = photo_26
+    elif iLoad == 27:
+        imageLabel.configure(image=photo_27)
+        imageLabel.image = photo_27
+    elif iLoad == 28:
+        imageLabel.configure(image=photo_28)
+        imageLabel.image = photo_28
+    elif iLoad == 29:
+        imageLabel.configure(image=photo_29)
+        imageLabel.image = photo_29
+        InitMenu()
+
+        if WEATHER_VALUE == "1":
+            WEATHER_LABEL_BUFFER.configure(image = WEATHER_IMG_1)
+            WEATHER_LABEL_BUFFER.image = WEATHER_IMG_1
+        elif WEATHER_VALUE == "2":
+            WEATHER_LABEL_BUFFER.configure(image = WEATHER_IMG_2)
+            WEATHER_LABEL_BUFFER.image = WEATHER_IMG_2
+        elif WEATHER_VALUE == "3":
+            WEATHER_LABEL_BUFFER.configure(image = WEATHER_IMG_3)
+            WEATHER_LABEL_BUFFER.image = WEATHER_IMG_3
+        elif WEATHER_VALUE == "4":
+            WEATHER_LABEL_BUFFER.configure(image = WEATHER_IMG_4)
+            WEATHER_LABEL_BUFFER.image = WEATHER_IMG_4
+
+        print(WEATHER_VALUE)
+
+        WEATHER_LABEL_BUFFER.place(x=361, y=14)
+
+    elif iLoad == 30:
+        imageLabel.configure(image=photo_30)
+        imageLabel.image = photo_30
+    elif iLoad == 31:
+        imageLabel.configure(image=photo_31)
+        imageLabel.image = photo_31
+    elif iLoad == 32:
+        imageLabel.configure(image=photo_32)
+        imageLabel.image = photo_32
+    elif iLoad == 33:
+        imageLabel.configure(image=photo_33)
+        imageLabel.image = photo_33
+    elif iLoad == 34:
+        imageLabel.configure(image=photo_34)
+        imageLabel.image = photo_34
+    elif iLoad == 35:
+        imageLabel.configure(image=photo_35)
+        imageLabel.image = photo_35
+    elif iLoad == 36:
+        imageLabel.configure(image=photo_36)
+        imageLabel.image = photo_36
+    elif iLoad == 37:
+        imageLabel.configure(image=photo_37)
+        imageLabel.image = photo_37
+    elif iLoad == 38:
+        imageLabel.configure(image=photo_38)
+        imageLabel.image = photo_28
+    elif iLoad == 39:
+        imageLabel.configure(image=photo_39)
+        imageLabel.image = photo_39
+    elif iLoad == 40:
+        imageLabel.configure(image=photo_40)
+        imageLabel.image = photo_40
+    elif iLoad == 41:
+        imageLabel.configure(image=photo_41)
+        imageLabel.image = photo_41
+    elif iLoad == 42:
+        imageLabel.configure(image=photo_42)
+        imageLabel.image = photo_42
+    elif iLoad == 43:
+        imageLabel.configure(image=photo_43)
+        imageLabel.image = photo_43
+    elif iLoad == 44:
+        imageLabel.configure(image=photo_44)
+        imageLabel.image = photo_44
 
 def StartAnimation():
-    global g_Tk, imageLabel
-    imgbutton = Button(g_Tk, text='클릭', command=changeImg)
+    global g_Tk, imageLabel, imgbutton, WEATHER_VALUE
+    imgbutton = Button(g_Tk, font= LittleButtonFont,text='START', command=changeImg)
 
     imgbutton.pack()
-    imgbutton.place(x=200, y=200)
+    imgbutton.place(x=200, y=700)
+    imgbutton["bg"] = "white"
+    imgbutton["fg"] = "pink"
+
 
 def clock():
     time = datetime.datetime.now().strftime("Time: %H:%M:%S")
@@ -569,142 +744,10 @@ def clock():
     if isAni:
         changeImg()
 
-
-
-def InitTopText():
-    TempFont = font.Font(g_Tk, size=20, weight='bold', family = 'Consolas')
-    MainText = Label(g_Tk, font = TempFont, text="For My Angel")
-    MainText.pack()
-    MainText.place(x=0)
-
-def InitSearchListBox():
-    global SearchListBox
-    #
-    ListBoxScrollbar = Scrollbar(g_Tk)
-    ListBoxScrollbar.pack()
-    ListBoxScrollbar.place(x=150, y=50)
-
-    TempFont = font.Font(g_Tk, size=15, weight='bold', family='Consolas')
-    SearchListBox = Listbox(g_Tk, font=TempFont, activestyle='none',
-                            width=10, height=1, borderwidth=12, relief='ridge',
-                            yscrollcommand=ListBoxScrollbar.set)
-
-    SearchListBox.insert(1, "문화")
-    SearchListBox.insert(2, "병원")
-    SearchListBox.insert(3, "영화")
-    SearchListBox.insert(4, "가격")
-    SearchListBox.insert(5, "여행")
-
-    SearchListBox.pack()
-    SearchListBox.place(x=10, y=50)
-
-    ListBoxScrollbar.config(command=SearchListBox.yview)
-
-def InitInputLabel():
-    global InputLabel
-    TempFont = font.Font(g_Tk, size=15, weight='bold', family = 'Consolas')
-    InputLabel = Entry(g_Tk, font = TempFont, width = 26, borderwidth = 12, relief = 'ridge')
-    InputLabel.pack()
-    InputLabel.place(x=10, y=105)
-
-def InitSearchButton():
-    TempFont = font.Font(g_Tk, size=12, weight='bold', family = 'Consolas')
-    SearchButton = Button(g_Tk, font = TempFont, text="검색",  command=SearchButtonAction)
-    SearchButton.pack()
-    SearchButton.place(x=330, y=110)
-
-def SearchButtonAction():
-    global SearchListBox
-
-    RenderText.configure(state='normal')
-    RenderText.delete(0.0, END)
-    iSearchIndex = SearchListBox.curselection()[0]
-    if iSearchIndex == 0:
-        SearchLibrary()
-    elif iSearchIndex == 1:
-        pass#SearchGoodFoodService()
-    elif iSearchIndex == 2:
-        pass#SearchMarket()
-    elif iSearchIndex == 3:
-        pass#SearchCultural()
-
-    RenderText.configure(state='disabled')
-
-def SearchLibrary():
-    import http.client
-    from xml.dom.minidom import parse, parseString
-    conn = http.client.HTTPConnection("openAPI.seoul.go.kr:8088")
-    conn.request("GET", "/6b4f54647867696c3932474d68794c/xml/GeoInfoLibrary/1/800")
-    req = conn.getresponse()
-
-    global DataList
-    DataList.clear()
-
-    if req.status == 200:
-        BooksDoc = req.read().decode('utf-8')
-        if BooksDoc == None:
-            print("에러")
-        else:
-            parseData = parseString(BooksDoc)
-            GeoInfoLibrary = parseData.childNodes
-            row = GeoInfoLibrary[0].childNodes
-
-            for item in row:
-                if item.nodeName == "row":
-                    subitems = item.childNodes
-
-                    if subitems[3].firstChild.nodeValue == InputLabel.get():
-                        pass
-                    elif subitems[5].firstChild.nodeValue == InputLabel.get():
-                        pass
-                    else:
-                        continue
-
-                    if subitems[29].firstChild is not None:
-                        tel = str(subitems[29].firstChild.nodeValue)
-                        pass
-                        if tel[0] is not '0':
-                            tel = "02-" + tel
-                            pass
-                        DataList.append((subitems[15].firstChild.nodeValue, subitems[13].firstChild.nodeValue, tel))
-                    else:
-                        DataList.append((subitems[15].firstChild.nodeValue, subitems[13].firstChild.nodeValue, "-"))
-
-            for i in range(len(DataList)):
-                RenderText.insert(INSERT, "[")
-                RenderText.insert(INSERT, i + 1)
-                RenderText.insert(INSERT, "] ")
-                RenderText.insert(INSERT, "시설명: ")
-                RenderText.insert(INSERT, DataList[i][0])
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "주소: ")
-                RenderText.insert(INSERT, DataList[i][1])
-                RenderText.insert(INSERT, "\n")
-                RenderText.insert(INSERT, "전화번호: ")
-                RenderText.insert(INSERT, DataList[i][2])
-                RenderText.insert(INSERT, "\n\n")
-
-def InitRenderText():
-    global RenderText
-
-    RenderTextScrollbar = Scrollbar(g_Tk)
-    RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375, y=200)
-
-    TempFont = font.Font(g_Tk, size=10, family='Consolas')
-    RenderText = Text(g_Tk, width=49, height=27, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
-    RenderText.pack()
-    RenderText.place(x=10, y=215)
-    RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
-
-    RenderText.configure(state='disabled')
-
 #def ThinterUI():
 
-#clock()
-
-InitMenu()
+clock()
+StartAnimation()
 """
 InitTopText()
 InitSearchListBox()
