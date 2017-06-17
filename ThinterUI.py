@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import font
+
 
 from Book_Internet import *
 from Weather_internet import *
@@ -12,8 +11,12 @@ import datetime
 
 import playsound
 import winsound
-
 import tkinter.messagebox
+#import spam
+from tkinter import *
+from tkinter import font
+
+
 g_Tk = Tk()
 #g_Tk.geometry("400x600+750+200")
 g_Tk.geometry("480x800+600+5")
@@ -99,7 +102,7 @@ WEATHER_IMG_4 = PhotoImage(file="Weather_4.png")
 WEATHER_LABEL_BUFFER = Label(g_Tk, image = PhotoImage(file="buffer.png"))
 WEATHER_LABEL_BUFFER.pack()
 
-WEATHER_VALUE = getWeatherData()
+WEATHER_VALUE =  getWeatherData() #날씨값에러여기서 1, 2 ,3 4,잡아요!
 
 lab = Label(g_Tk)       #clock
 lab.pack()
@@ -641,6 +644,8 @@ def changeImg():
     elif iLoad == 20:
         imageLabel.configure(image=photo_20)
         imageLabel.image = photo_20
+        winsound.PlaySound('startBgm.wav', winsound.SND_FILENAME)
+
     elif iLoad == 21:
         imageLabel.configure(image=photo_21)
         imageLabel.image = photo_21
